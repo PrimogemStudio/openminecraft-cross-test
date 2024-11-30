@@ -89,14 +89,14 @@ jobs:
           memory: 8G
           shell: bash
           run: |
-            sudo pkg install -y git cmake ninja
+            sudo pkg install -y git cmake ninja gmake
             ls /usr/bin | grep make
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
             /usr/bin/make --version
             ./configure --make=/usr/bin/make
-            make
+            gmake
             ./scripts/get.sh __local__ __install_only__
             source ~/.xmake/profile
             cd ..
