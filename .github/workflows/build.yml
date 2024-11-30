@@ -90,11 +90,13 @@ jobs:
           shell: bash
           environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
-            uname -a
-            echo $SHELL
-            pwd
-            ls -lah
-        
+            git clone --recursive https://github.com/xmake-io/xmake.git
+            cd ./xmake
+            ./configure
+            gmake
+            ./scripts/get.sh __local__ __install_only__
+            source ~/.xmake/profile
+            cd ..
 
       - name: Configure MSVC
         if: matrix.plat == 'windows'
