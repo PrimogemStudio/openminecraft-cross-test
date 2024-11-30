@@ -71,7 +71,7 @@ jobs:
           sudo apt install g++-aarch64-linux-gnu
           sudo apt install libc6-dev-arm64-cross
           ls /usr/bin | grep gcc
-          xmake f -p arm64 --sdk=/usr -yc
+          xmake f -p arm64 --sdk=/usr --cross=aarch64-linux-gnu- -yc
           xmake -y -v
 
       - name: Configure MSVC
