@@ -26,6 +26,11 @@ jobs:
             plat: linux
             arch: x64
 
+          - os: ubuntu-latest
+            name: FreeBSD
+            plat: freebsd
+            arch: x64
+
           - os: macos-14
             name: MacOS (Arm64)
             plat: macos-darwin
@@ -73,6 +78,23 @@ jobs:
           ls /usr/bin | grep gcc
           xmake f -p arm64 --sdk=/usr --cross=aarch64-linux-gnu- -yc
           xmake -y -v
+
+      - name: Build FreeBSD 
+        if: matrix.plat == 'freebsd'
+        uses: cross-platform-actions/action@v0.25.0
+        with:
+          operating_system: freebsd
+          architecture: x86-64
+          version: '13.3'
+          memory: 8G
+          shell: bash
+          environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
+          run: |
+            uname -a
+            echo $SHELL
+            pwd
+            ls -lah
+        
 
       - name: Configure MSVC
         if: matrix.plat == 'windows'
