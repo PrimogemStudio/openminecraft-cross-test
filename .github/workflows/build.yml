@@ -1,5 +1,9 @@
 name: Build
 on: [push, pull_request]
+env:
+  LINK_JOBS: 16
+  JOBS: 16
+
 jobs:
   build:
     strategy:
@@ -93,7 +97,7 @@ jobs:
         if: matrix.plat == 'macos-darwin'
         run: |
           xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
-          xmake -y
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
           mv build/macosx build/macos
 
@@ -108,7 +112,7 @@ jobs:
           sudo apt update
           sudo apt install gcc-multilib g++-multilib
           xmake f -a ${{ matrix.arch }} -yc
-          xmake -y
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Build Linux Cross
         if: ${{ matrix.plat == 'linux' && matrix.arch != 'x64' }}
@@ -118,7 +122,7 @@ jobs:
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
           xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -yc
-          xmake -y
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Build FreeBSD 
         if: matrix.plat == 'freebsd'
@@ -129,6 +133,7 @@ jobs:
           version: '13.3'
           memory: 8G
           shell: bash
+          environment_variables: LINK_JOBS JOBS
           run: |
             sudo pkg install -y git cmake ninja gmake
             ls /usr/bin | grep make
@@ -143,7 +148,7 @@ jobs:
             cd ..
 
             xmake f -y
-            xmake -y
+            xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
@@ -156,7 +161,7 @@ jobs:
         if: matrix.plat == 'windows'
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }}
-          xmake -y
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
