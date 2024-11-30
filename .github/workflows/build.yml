@@ -82,10 +82,10 @@ jobs:
           fetch-depth: 0
 
       - name: Install LLVM and Clang
-        if: matrix.plat == 'macos-darwin'
+        if: matrix.plat == 'macos'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
-          arm: ${{ matrix.plat == 'macos-darwin' && matrix.arch == 'arm64' }}
+          arm: ${{ matrix.plat == 'macos' && matrix.arch == 'arm64' }}
 
       - name: Install xmake
         if: matrix.plat != 'freebsd'
@@ -94,7 +94,7 @@ jobs:
           xmake-version: branch@master
 
       - name: Build MacOS
-        if: matrix.plat == 'macos-darwin'
+        if: matrix.plat == 'macos'
         run: |
           xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
@@ -102,7 +102,7 @@ jobs:
           mv build/macosx build/macos
 
       - name: Fix MacOS Target Path
-        if: ${{ matrix.plat == 'macos-darwin' && matrix.arch == 'x64' }}
+        if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
         run: |
           mv build/macos/x86_64 build/macos/x64
 
@@ -161,14 +161,6 @@ jobs:
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }} -y
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
-
-      - name: Fix Path
-        run: |
-          cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          mv **.so .
-          mv **.dylib .
-          mv **.dll .
-          cd ../../..
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
