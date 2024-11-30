@@ -24,6 +24,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install LLVM and Clang
+        if: matrix.os != 'windows-latest'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
           arm: ${{ matrix.os == 'macos-14' }}
