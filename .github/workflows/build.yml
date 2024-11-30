@@ -65,7 +65,7 @@ jobs:
         if: matrix.plat == 'macos-darwin'
         run: |
           xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
-          xmake -y -v
+          xmake -y
 
       - name: Build Linux
         if: matrix.plat == 'linux'
@@ -76,8 +76,8 @@ jobs:
           sudo apt install gcc-aarch64-linux-gnu
           sudo apt install g++-aarch64-linux-gnu
           sudo apt install libc6-dev-arm64-cross
-          xmake f -p arm64 --sdk=/usr --cross=aarch64-linux-gnu- -v -yc
-          xmake -y -v
+          xmake f -p arm64 --sdk=/usr --cross=aarch64-linux-gnu- -yc
+          xmake -y
 
       - name: Build FreeBSD 
         if: matrix.plat == 'freebsd'
@@ -90,9 +90,18 @@ jobs:
           shell: bash
           environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
-            sudo pkg install -y git xmake cmake make
+            sudo pkg install -y git cmake
+            git clone --recursive https://github.com/xmake-io/xmake.git
+            cd ./xmake
+
+            ./configure --make=/bin/gmake
+            gmake
+            ./scripts/get.sh __local__ __install_only__
+            source ~/.xmake/profile
+            cd ..
+
             xmake f -y
-            xmake -y -v
+            xmake -y
 
       - name: Configure MSVC
         if: matrix.plat == 'windows'
@@ -102,7 +111,7 @@ jobs:
         if: matrix.plat == 'windows'
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }}
-          xmake -y -v
+          xmake -y
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
