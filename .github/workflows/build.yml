@@ -72,7 +72,7 @@ jobs:
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }}
           xmake -y -v
-          dumpbin /header build\windows\${{ matrix.arch }}\release\test.dll
+          dumpbin /headers build\windows\${{ matrix.arch }}\release\test.dll
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
