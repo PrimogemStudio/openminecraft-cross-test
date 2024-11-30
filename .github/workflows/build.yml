@@ -8,24 +8,33 @@ jobs:
         include:
           - os: windows-latest
             name: Windows (x86_64)
+            plat: windows
             arch: x64
 
           - os: windows-latest
             name: Windows (x86)
+            plat: windows
             arch: x86
 
           - os: windows-latest
             name: Windows (Arm64)
+            plat: windows
             arch: arm64
 
           - os: ubuntu-latest
             name: Linux
+            plat: linux
+            arch: x64
 
           - os: macos-14
             name: MacOS
+            plat: macos-darwin
+            arch: arm64
 
           - os: macos-13
             name: MacOS (x86)
+            plat: macos-darwin
+            arch: x64
 
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -36,10 +45,10 @@ jobs:
           fetch-depth: 0
 
       - name: Install LLVM and Clang
-        if: matrix.os != 'windows-latest'
+        if: matrix.plat != 'windows'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
-          arm: ${{ matrix.os == 'macos-14' }}
+          arm: ${{ matrix.plat == 'macos-darwin' && matrix.arch == 'arm64' }}
 
       - name: Install xmake
         uses: xmake-io/github-action-setup-xmake@v1
@@ -47,13 +56,13 @@ jobs:
           xmake-version: branch@master
 
       - name: Build MacOS
-        if: ${{ matrix.os == 'macos-14' || matrix.os == 'macos-13' }}
+        if: matrix.plat == 'macos-darwin'
         run: |
           xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
           xmake -y -v
 
       - name: Build Linux
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.plat == 'linux'
         run: |
           sudo apt update
           sudo apt install gcc-multilib 
@@ -64,11 +73,11 @@ jobs:
           xmake -y -v
 
       - name: Configure MSVC
-        if: matrix.os == 'windows-latest'
+        if: matrix.plat == 'windows'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.plat == 'windows'
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }}
           xmake -y -v
@@ -77,6 +86,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ matrix.os }}-${{ matrix.arch }}
+          name: build-${{ matrix.plat }}-${{ matrix.arch }}
           path: build/
  
