@@ -91,14 +91,9 @@ jobs:
           shell: bash
           environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
-            sudo pkg install -y git ninja xmake
-            git clone --recursive https://github.com/xmake-io/xmake.git
-            cd ./xmake
-            ./configure --make=gmake
-            gmake
-            ./scripts/get.sh __local__ __install_only__
-            source ~/.xmake/profile
-            cd ..
+            sudo pkg install -y git xmake
+            xmake f -yc
+            xmake -y -v
 
       - name: Configure MSVC
         if: matrix.plat == 'windows'
