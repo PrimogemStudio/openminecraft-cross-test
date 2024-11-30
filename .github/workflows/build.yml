@@ -7,7 +7,7 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            name: Windows (x86_64)
+            name: Windows (x64)
             plat: windows
             arch: x64
 
@@ -27,7 +27,7 @@ jobs:
             arch: x64
 
           - os: macos-14
-            name: MacOS
+            name: MacOS (Arm64)
             plat: macos-darwin
             arch: arm64
 
@@ -69,7 +69,7 @@ jobs:
           sudo apt install g++-multilib
           sudo apt install g++-aarch64-linux-gnu
           sudo apt install libc6-dev-arm64-cross
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" --cflags="--target=aarch64-linux-gnu" --cxxflags="--target=aarch64-linux-gnu" --ldflags="--target=aarch64-linux-gnu" -p arm64 -yc
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" --cflags="--target=aarch64-linux-gnu" --cxxflags="--target=aarch64-linux-gnu" --ldflags="--target=aarch64-linux-gnu -fuse-ld=lld" -p arm64 -yc
           xmake -y -v
 
       - name: Configure MSVC
