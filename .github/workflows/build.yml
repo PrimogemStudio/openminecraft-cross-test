@@ -9,7 +9,7 @@ jobs:
           - os: windows-latest
             name: Windows (x86_64)
             arch: amd64
-            compiler_arch: x64
+            compiler_arch: x86_64
           - os: windows-latest
             name: Windows (x86)
             arch: amd64_x86
@@ -70,7 +70,7 @@ jobs:
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         run: |
-          xmake f --toolchain=msvc --cflags="-machine:${{ matrix.compiler_arch }}" --cxxflags="-machine:${{ matrix.compiler_arch }}" --ldflags="-machine:${{ matrix.compiler_arch }}"
+          xmake f --toolchain=msvc -a ${{ matrix.compiler_arch }}
           xmake -y -v
           dumpbin /headers build\windows\x64\release\test.dll
 
