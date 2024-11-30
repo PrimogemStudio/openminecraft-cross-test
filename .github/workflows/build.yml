@@ -50,8 +50,14 @@ jobs:
           xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -yc
           xmake -y -v
 
+      - name: Configure MSVC
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
+          xmake f --toolchain=msvc
           xmake -y -v
