@@ -22,9 +22,37 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
-            name: Linux
+            name: Linux (x64)
             plat: linux
             arch: x64
+
+          - os: ubuntu-latest
+            name: Linux (Arm64)
+            plat: linux
+            arch: arm64
+            triplet: aarch64-linux-gnu
+            libc_arch: arm64
+
+          - os: ubuntu-latest
+            name: Linux (Arm32)
+            plat: linux
+            arch: arm32
+            triplet: arm-linux-gnueabihf
+            libc_arch: armhf
+
+          - os: ubuntu-latest
+            name: Linux (PPC64)
+            plat: linux
+            arch: ppc64le
+            triplet: powerpc64le-linux-gnu
+            libc_arch: ppc64el
+
+          - os: ubuntu-latest
+            name: Linux (RISCV)
+            plat: linux
+            arch: riscv64
+            triplet: riscv64-linux-gnu
+            libc_arch: riscv64
 
           - os: ubuntu-latest
             name: FreeBSD
@@ -64,19 +92,25 @@ jobs:
       - name: Build MacOS
         if: matrix.plat == 'macos-darwin'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -p macos -a ${{ matrix.arch }} -y
           xmake -y
 
       - name: Build Linux
-        if: matrix.plat == 'linux'
+        if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
         run: |
           sudo apt update
-          sudo apt install gcc-multilib 
-          sudo apt install g++-multilib
-          sudo apt install gcc-aarch64-linux-gnu
-          sudo apt install g++-aarch64-linux-gnu
-          sudo apt install libc6-dev-arm64-cross
-          xmake f -p arm64 --sdk=/usr --cross=aarch64-linux-gnu- -yc
+          sudo apt install gcc-multilib g++-multilib
+          xmake f -a ${{ matrix.arch }} -yc
+          xmake -y
+
+      - name: Build Linux Cross
+        if: ${{ matrix.plat == 'linux' && matrix.arch != 'x64' }}
+        run: |
+          sudo apt update
+          sudo apt install gcc-multilib g++-multilib
+          sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
+          sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
+          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -yc
           xmake -y
 
       - name: Build FreeBSD 
@@ -101,7 +135,7 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -y
+            xmake f -p freebsd -a x64 -y
             xmake -y
 
       - name: Configure MSVC
