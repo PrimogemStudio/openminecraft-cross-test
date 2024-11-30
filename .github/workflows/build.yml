@@ -7,7 +7,14 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            name: Windows
+            name: Windows (x86_64)
+            arch: amd64
+          - os: windows-latest
+            name: Windows (x86)
+            arch: amd64_x86
+          - os: windows-latest
+            name: Windows (Arm64)
+            arch: amd64_arm64
           - os: ubuntu-latest
             name: Linux
           - os: macos-14
@@ -55,7 +62,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          arch: amd64
+          arch: ${{ matrix.arch }}
 
       - name: Build Windows
         if: matrix.os == 'windows-latest'
