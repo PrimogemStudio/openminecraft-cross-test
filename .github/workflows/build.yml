@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install LLVM and Clang
-        uses: PrimogemStudio/openminecraft-llvm-install@master
+        uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
           arm: ${{ matrix.os == 'macos-14' }}
 
