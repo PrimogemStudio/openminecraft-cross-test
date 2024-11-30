@@ -50,12 +50,13 @@ jobs:
           fetch-depth: 0
 
       - name: Install LLVM and Clang
-        if: matrix.plat != 'windows'
+        if: matrix.plat == 'macos-darwin'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
           arm: ${{ matrix.plat == 'macos-darwin' && matrix.arch == 'arm64' }}
 
       - name: Install xmake
+        if: matrix.plat != 'freebsd'
         uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: branch@master
