@@ -94,7 +94,7 @@ jobs:
             sudo pkg install -y git
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
-            ./configure
+            ./configure --make=gmake
             gmake
             ./scripts/get.sh __local__ __install_only__
             source ~/.xmake/profile
