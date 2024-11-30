@@ -160,7 +160,7 @@ jobs:
       - name: Build Windows
         if: matrix.plat == 'windows'
         run: |
-          xmake f --toolchain=msvc -a ${{ matrix.arch }}
+          xmake f --toolchain=msvc -a ${{ matrix.arch }} -m releasedbg
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Upload Artifacts
