@@ -91,7 +91,7 @@ jobs:
           shell: bash
           environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
-            sudo pkg install -y git ninja
+            sudo pkg install -y git ninja xmake
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
             ./configure --make=gmake
