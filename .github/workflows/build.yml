@@ -69,6 +69,7 @@ jobs:
         run: |
           xmake f --toolchain=msvc
           xmake -y -v
+          dumpbin /headers build\windows\x64\release\test.dll
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
