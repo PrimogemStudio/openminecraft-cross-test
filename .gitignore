@@ -1,0 +1,9 @@
+.xmake
+build
+vsxmake*
+.vscode
+CMake*
+cmake*
+.cache
+.idea
+.clang-format

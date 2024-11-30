@@ -1,0 +1,57 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: Windows
+          - os: ubuntu-latest
+            name: Linux
+          - os: macos-14
+            name: MacOS
+          - os: macos-13
+            name: MacOS (x86)
+
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install LLVM and Clang
+        uses: PrimogemStudio/openminecraft-llvm-install@master
+        with:
+          arm: ${{ matrix.os == 'macos-14' }}
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: branch@master
+
+      - name: Build MacOS
+        if: ${{ matrix.os == 'macos-14' || matrix.os == 'macos-13' }}
+        run: |
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
+          xmake -y
+
+      - name: Build Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install gcc-multilib 
+          sudo apt install g++-multilib
+          sudo apt install g++-aarch64-linux-gnu
+          sudo apt install libc6-dev-arm64-cross
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -yc
+          xmake -y
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
+          xmake -y
