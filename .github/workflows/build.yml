@@ -3,6 +3,7 @@ on: [push, pull_request]
 env:
   LINK_JOBS: 16
   JOBS: 16
+  MODE: release
 
 jobs:
   build:
@@ -85,7 +86,7 @@ jobs:
         if: matrix.plat == 'macos'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
-          arm: ${{ matrix.plat == 'macos' && matrix.arch == 'arm64' }}
+          arm: ${{ matrix.arch == 'arm64' }}
 
       - name: Install xmake
         if: matrix.plat != 'freebsd'
@@ -96,7 +97,7 @@ jobs:
       - name: Build MacOS
         if: matrix.plat == 'macos'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -m ${{ env.MODE }} -y
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
           mv build/macosx build/macos
@@ -111,7 +112,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install gcc-multilib g++-multilib
-          xmake f -a ${{ matrix.arch }} -yc
+          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Build Linux Cross
@@ -121,7 +122,7 @@ jobs:
           sudo apt install gcc-multilib g++-multilib
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
-          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -yc
+          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Build FreeBSD 
@@ -133,7 +134,7 @@ jobs:
           version: '13.3'
           memory: 8G
           shell: bash
-          environment_variables: LINK_JOBS JOBS
+          environment_variables: LINK_JOBS JOBS MODE
           run: |
             sudo pkg install -y git cmake ninja gmake
             git clone --recursive https://github.com/xmake-io/xmake.git
@@ -146,7 +147,7 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -y
+            xmake f -m ${{ env.MODE }} -y
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
             mv build/bsd build/freebsd
@@ -159,21 +160,22 @@ jobs:
       - name: Build Windows
         if: matrix.plat == 'windows'
         run: |
-          xmake f --toolchain=msvc -a ${{ matrix.arch }} -y
+          xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -y
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
 
       - name: Fix Path (Windows)
         if: matrix.plat == 'windows'
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          cp **.dll .
+          mv ${{ env.MODE }}/*.dll .
           cd ../../..
 
       - name: Fix Path (Unix)
         if: matrix.plat != 'windows'
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          bash -c "cp **.so . && cp **.dylib ."
+          ls
+          bash -c "mv ${{ env.MODE }}/*.so . && mv ${{ env.MODE }}/*.dylib ."
           cd ../../..
 
       - name: Upload Artifacts
