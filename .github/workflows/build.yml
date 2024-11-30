@@ -88,9 +88,9 @@ jobs:
           version: '13.3'
           memory: 8G
           shell: bash
-          environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
             sudo pkg install -y git cmake ninja
+            ls /usr/bin | grep make
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
