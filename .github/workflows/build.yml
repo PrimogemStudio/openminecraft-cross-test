@@ -92,7 +92,7 @@ jobs:
           environment_variables: ANT_OPTS LWJGL_BUILD_TYPE
           run: |
             sudo pkg install -y git xmake
-            xmake f -yc
+            xmake f -y
             xmake -y -v
 
       - name: Configure MSVC
