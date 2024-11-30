@@ -96,7 +96,8 @@ jobs:
 
             /usr/bin/make --version
             ./configure --make=/usr/bin/make
-            make
+            cat makefile
+            bmake
             ./scripts/get.sh __local__ __install_only__
             source ~/.xmake/profile
             cd ..
