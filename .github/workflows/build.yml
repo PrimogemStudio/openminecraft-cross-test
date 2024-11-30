@@ -65,12 +65,12 @@ jobs:
 
           - os: macos-14
             name: MacOS (Arm64)
-            plat: macos-darwin
+            plat: macos
             arch: arm64
 
           - os: macos-13
             name: MacOS (x86)
-            plat: macos-darwin
+            plat: macos
             arch: x64
 
     name: Build ${{ matrix.name }}
@@ -136,7 +136,6 @@ jobs:
           environment_variables: LINK_JOBS JOBS
           run: |
             sudo pkg install -y git cmake ninja gmake
-            ls /usr/bin | grep make
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
@@ -162,6 +161,14 @@ jobs:
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }} -m minsizerel -y
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+
+      - name: Fix Path
+        run: |
+          cd build/${{ matrix.plat }}/${{ matrix.arch }}
+          mv **.so .
+          mv **.dylib .
+          mv **.dll .
+          cd ../../..
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
