@@ -92,7 +92,7 @@ jobs:
       - name: Build MacOS
         if: matrix.plat == 'macos-darwin'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -p macos -a ${{ matrix.arch }} -y
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -y
           xmake -y
 
       - name: Build Linux
@@ -135,7 +135,7 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -p freebsd -a x64 -y
+            xmake f -y
             xmake -y
 
       - name: Configure MSVC
