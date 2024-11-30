@@ -8,20 +8,22 @@ jobs:
         include:
           - os: windows-latest
             name: Windows (x86_64)
-            arch: amd64
-            compiler_arch: x86_64
+            arch: x86_64
+
           - os: windows-latest
             name: Windows (x86)
-            arch: amd64_x86
-            compiler_arch: x86
+            arch: x86
+
           - os: windows-latest
             name: Windows (Arm64)
-            arch: amd64_arm64
-            compiler_arch: arm64
+            arch: arm64
+
           - os: ubuntu-latest
             name: Linux
+
           - os: macos-14
             name: MacOS
+
           - os: macos-13
             name: MacOS (x86)
 
@@ -64,15 +66,13 @@ jobs:
       - name: Configure MSVC
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: ${{ matrix.arch }}
 
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         run: |
-          xmake f --toolchain=msvc -a ${{ matrix.compiler_arch }}
+          xmake f --toolchain=msvc -a ${{ matrix.arch }}
           xmake -y -v
-          dumpbin /headers build\windows\x64\release\test.dll
+          dumpbin /header build\windows\${{ matrix.arch }}\release\test.dll
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
