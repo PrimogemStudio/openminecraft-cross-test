@@ -94,8 +94,9 @@ jobs:
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
+            make --version
             ./configure
-            gmake
+            make
             ./scripts/get.sh __local__ __install_only__
             source ~/.xmake/profile
             cd ..
