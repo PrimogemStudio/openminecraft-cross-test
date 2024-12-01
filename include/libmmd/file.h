@@ -6,7 +6,7 @@
 typedef struct {
     uint64_t length;
     void* data;
-} FileBase;
+} mmd_file_base;
 
 int mmd_file_open(char* path, void* pResult);
 
