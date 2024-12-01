@@ -83,11 +83,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install LLVM and Clang
+      - name: Install LLVM and Clang (MacOS)
         if: matrix.plat == 'macos'
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
           arm: ${{ matrix.arch == 'arm64' }}
+
+      - name: Install LLVM and Clang (Linux & Windows)
+        if: ${{ matrix.plat != 'macos' && matrix.arch == 'x64' }}
+        uses: PrimogemStudio/openminecraft-llvm-install@main
+        with:
+          arm: false
 
       - name: Install xmake
         if: matrix.plat != 'freebsd'
@@ -113,7 +119,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install gcc-multilib g++-multilib
-          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux Cross
@@ -154,14 +160,20 @@ jobs:
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
 
-      - name: Configure MSVC
-        if: matrix.plat == 'windows'
+      - name: Configure MSVC Cross
+        if: ${{ matrix.plat == 'windows' && matrix.arch != 'x64' }}
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build Windows
-        if: matrix.plat == 'windows'
+      - name: Build Windows Cross
+        if: ${{ matrix.plat == 'windows' && matrix.arch != 'x64' }}
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+
+      - name: Build Windows
+        if: ${{ matrix.plat == 'windows' && matrix.arch == 'x64' }}
+        run: |
+          xmake f --toolchain=llvm --sdk=${{ env.LLVM_PATH }} -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix Path (Windows)
