@@ -18,7 +18,7 @@ int mmd_file_open(char* path, void* pResult) {
 
     fclose(fp);
 
-    struct FileBase* fb = (struct FileBase*) pResult;
+    FileBase* fb = (FileBase*) pResult;
     fb->length = l;
     fb->data = data;
 
