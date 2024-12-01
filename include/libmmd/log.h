@@ -2,6 +2,7 @@
 #define _LOG_H
 
 #include "stdlib.h"
+#include "stdio.h"
 
 typedef void (*mmd_log_handler)(int type, char* file, int line, char* msg);
 #define LOG_DEBUG 0
@@ -13,6 +14,6 @@ typedef void (*mmd_log_handler)(int type, char* file, int line, char* msg);
 int mmd_log_set_handler(mmd_log_handler handler);
 void mmd_log(int type, char* file, int line, char* msg);
 
-#define LIBMMD_LOG(type, msg, ...) int length = snprintf(NULL, 16, msg, __VA_ARGS__);char* buf = malloc(length);snprintf(buf, length, msg, __VA_ARGS__);mmd_log(type, __FILE__, __LINE__, buf)
+#define LIBMMD_LOG(type, msg) mmd_log(type, __FILE__, __LINE__, msg)
 
 #endif
