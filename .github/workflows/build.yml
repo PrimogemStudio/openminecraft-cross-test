@@ -181,22 +181,14 @@ jobs:
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
           mv ${{ env.MODE }}/*.dll .
+          mv ${{ env.MODE }}/*.exe .
           cd ../../..
 
-      - name: Fix Path (MacOS)
-        if: matrix.plat == 'macos'
+      - name: Fix Path (Unix)
+        if: matrix.plat != 'windows'
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          ls
-          bash -c "mv ${{ env.MODE }}/*.dylib ."
-          cd ../../..
-
-      - name: Fix Path (Other Unix)
-        if: ${{ matrix.plat != 'macos' && matrix.plat != 'windows' }}
-        run: |
-          cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          ls
-          bash -c "mv ${{ env.MODE }}/*.so ."
+          bash -c "mv ${{ env.MODE }}/* ."
           cd ../../..
 
       - name: Upload Artifacts
