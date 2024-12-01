@@ -1,6 +1,7 @@
 #include "libmmd/file.h"
 #include "libmmd/return_codes.h"
 #include "stdio.h"
+#include "stdlib.h"
 
 int mmd_file_open(char* path, void* pResult) {
     if (!path) return MMD_FILE_NULL_PTR;
@@ -11,7 +12,7 @@ int mmd_file_open(char* path, void* pResult) {
     fseek(fp, 0, SEEK_END);
     uint64_t l = ftell(fp);
 
-    uint8_t data[l];
+    uint8_t* data = malloc(l);
     fgets(data, l, fp);
 
     fclose(fp);
