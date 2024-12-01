@@ -89,8 +89,8 @@ jobs:
         with:
           arm: ${{ matrix.arch == 'arm64' }}
 
-      - name: Install LLVM and Clang (Linux & Windows)
-        if: ${{ matrix.plat != 'macos' && matrix.arch == 'x64' }}
+      - name: Install LLVM and Clang (Linux)
+        if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
         uses: PrimogemStudio/openminecraft-llvm-install@main
         with:
           arm: false
@@ -160,20 +160,14 @@ jobs:
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
 
-      - name: Configure MSVC Cross
-        if: ${{ matrix.plat == 'windows' && matrix.arch != 'x64' }}
+      - name: Configure MSVC
+        if: matrix.plat == 'windows'
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build Windows Cross
-        if: ${{ matrix.plat == 'windows' && matrix.arch != 'x64' }}
+      - name: Build Windows
+        if: matrix.plat == 'windows'
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
-
-      - name: Build Windows
-        if: ${{ matrix.plat == 'windows' && matrix.arch == 'x64' }}
-        run: |
-          xmake f --toolchain=llvm --sdk=${{ env.LLVM_PATH }} -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix Path (Windows)

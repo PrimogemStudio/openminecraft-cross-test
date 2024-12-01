@@ -1,6 +1,7 @@
 #include "libmmd/file.h"
 #include "libmmd/return_codes.h"
 #include "stdio.h"
+#include "stdint.h"
 #include "stdlib.h"
 
 int mmd_file_open(char* path, void* pResult) {
