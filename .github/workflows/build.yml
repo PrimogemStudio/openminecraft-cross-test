@@ -4,6 +4,7 @@ env:
   LINK_JOBS: 16
   JOBS: 16
   MODE: minsizerel
+  XMAKE_ARGS: -v
 
 jobs:
   build:
@@ -97,8 +98,8 @@ jobs:
       - name: Build MacOS
         if: matrix.plat == 'macos'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -m ${{ env.MODE }} -yc
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
           mv build/macosx build/macos
 
@@ -112,8 +113,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install gcc-multilib g++-multilib
-          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux Cross
         if: ${{ matrix.plat == 'linux' && matrix.arch != 'x64' }}
@@ -122,8 +123,8 @@ jobs:
           sudo apt install gcc-multilib g++-multilib
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
-          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build FreeBSD 
         if: matrix.plat == 'freebsd'
@@ -134,7 +135,7 @@ jobs:
           version: '13.3'
           memory: 8G
           shell: bash
-          environment_variables: LINK_JOBS JOBS MODE
+          environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
           run: |
             sudo pkg install -y git cmake ninja gmake
             git clone --recursive https://github.com/xmake-io/xmake.git
@@ -147,8 +148,8 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -m ${{ env.MODE }} -yc
-            xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+            xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+            xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
@@ -160,8 +161,8 @@ jobs:
       - name: Build Windows
         if: matrix.plat == 'windows'
         run: |
-          xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }}
+          xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix Path (Windows)
         if: matrix.plat == 'windows'
