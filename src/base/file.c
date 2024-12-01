@@ -1,11 +1,12 @@
 #include "libmmd/file.h"
+#include "libmmd/memory.h"
 #include "libmmd/return_codes.h"
 #include "stdio.h"
 #include "stdint.h"
 #include "stdlib.h"
 
 int mmd_file_open(char* path, void* pResult) {
-    if (!path) return MMD_FILE_NULL_PTR;
+    if (!path) return MMD_NULL_PTR;
     
     FILE* fp = fopen(path, "r");
     if (!fp) return MMD_FILE_NOT_FOUND;
@@ -13,7 +14,7 @@ int mmd_file_open(char* path, void* pResult) {
     fseek(fp, 0, SEEK_END);
     uint64_t l = ftell(fp);
 
-    uint8_t* data = malloc(l);
+    uint8_t* data = mmd_memory_allocate(l);
     fgets(data, l, fp);
 
     fclose(fp);
