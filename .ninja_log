@@ -1,8 +1,0 @@
-# ninja log v6
-0	292	1733036645323370106	build.ninja	af3497d05a4e3238
-1	34	1733036645616700976	build/.objs/test/linux/x86_64/release/src/base/file.c.o	3f74d4a218d9c0a4
-2	37	1733036645616700976	build/.objs/mmd/linux/x86_64/release/src/base/file.c.o	2b05a3b32c0c571b
-1	40	1733036645616700976	build/.objs/mmd/linux/x86_64/release/src/test/test.c.o	d737a09d2c94662
-1	41	1733036645616700976	build/.objs/test/linux/x86_64/release/src/test/test.c.o	59f6a48fb8ebd627
-40	144	1733036645656700640	build/linux/x86_64/release/libmmd.so	3ee32302ce09f8a4
-41	145	1733036645656700640	build/linux/x86_64/release/test	7d4a313d612d8557
