@@ -22,6 +22,19 @@ int mmd_file_open(char* path, void* pResult) {
     mmd_file_base* fb = (mmd_file_base*) pResult;
     fb->length = l;
     fb->data = data;
+    fb->pointer = 0;
+
+    return MMD_NO_ERROR;
+}
+
+int mmd_file_wrap(uint64_t data_length, void* data, void* pResult)
+{
+    if (!data) return MMD_NULL_PTR;
+
+    mmd_file_base* fb = (mmd_file_base*) pResult;
+    fb->length = data_length;
+    fb->data = data;
+    fb->pointer = 0;
 
     return MMD_NO_ERROR;
 }
