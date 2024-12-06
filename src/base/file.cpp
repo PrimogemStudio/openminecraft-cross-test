@@ -5,7 +5,7 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-int mmd_file_open(char* path, void* pResult) {
+int mmd_file_open(const char* path, void* pResult) {
     if (!path) return MMD_NULL_PTR;
     
     FILE* fp = fopen(path, "r");
@@ -14,8 +14,8 @@ int mmd_file_open(char* path, void* pResult) {
     fseek(fp, 0, SEEK_END);
     uint64_t l = ftell(fp);
 
-    uint8_t* data = mmd_memory_allocate(l);
-    fgets(data, l, fp);
+    uint8_t* data = (uint8_t*) mmd_memory_allocate(l);
+    fgets((char*) data, l, fp);
 
     fclose(fp);
 
