@@ -7,7 +7,12 @@ int main()
 	puts("test!");
 
     mmd_file_base fb;
-	printf("%d\n", mmd_file_open("/home/coder2/extsources/libmmd/xmake.lua", &fb));
+	if (!mmd_file_open("/home/coder2/mmd/lumine/lumine.pmx", &fb))
+    {
+        printf("File open failed!");
+        return 0;
+    }
+
     printf("%d\n", fb.length);
 
 	return 0;
