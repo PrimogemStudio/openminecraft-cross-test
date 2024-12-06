@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include "libmmd/file.h"
 #include "stdlib.h"
-#include "glm/vec2.hpp"
 
 int main()
 {

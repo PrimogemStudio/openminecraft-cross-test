@@ -5,7 +5,7 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-int mmd_file_open(const char* path, void* pResult) {
+int mmd_file_open(const char* path, mmd_file_base* pResult) {
     if (!path) return MMD_NULL_PTR;
     
     FILE* fp = fopen(path, "r");
@@ -19,22 +19,20 @@ int mmd_file_open(const char* path, void* pResult) {
 
     fclose(fp);
 
-    mmd_file_base* fb = (mmd_file_base*) pResult;
-    fb->length = l;
-    fb->data = data;
-    fb->pointer = 0;
+    pResult->length = l;
+    pResult->data = data;
+    pResult->pointer = 0;
 
     return MMD_NO_ERROR;
 }
 
-int mmd_file_wrap(uint64_t data_length, void* data, void* pResult)
+int mmd_file_wrap(uint64_t data_length, void* data, mmd_file_base* pResult)
 {
     if (!data) return MMD_NULL_PTR;
 
-    mmd_file_base* fb = (mmd_file_base*) pResult;
-    fb->length = data_length;
-    fb->data = data;
-    fb->pointer = 0;
+    pResult->length = data_length;
+    pResult->data = data;
+    pResult->pointer = 0;
 
     return MMD_NO_ERROR;
 }
