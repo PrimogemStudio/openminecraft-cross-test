@@ -21,9 +21,9 @@ typedef struct {
     uint8_t bone_index_size;
     uint8_t morph_index_size;
     uint8_t rigid_body_index_size;
-} mmd_pmx_file;
+} mmd_pmx_file_header;
 
-int mmd_pmx_file_read_header(mmd_file_base* file);
+int mmd_pmx_file_read_header(mmd_file_base* file, mmd_pmx_file_header* pResult);
 
 }
 

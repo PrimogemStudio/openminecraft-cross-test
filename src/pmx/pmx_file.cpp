@@ -1,8 +1,9 @@
 #include "libmmd/pmx/pmx_file.h"
-#include <string>
+#include "libmmd/file.h"
+#include "libmmd/return_codes.h"
 
-extern "C" {
-    std::string test2() {
-        return "test!";
-    }
+int mmd_pmx_file_read_header(mmd_file_base* file, mmd_pmx_file_header* pResult)
+{
+
+    return MMD_NO_ERROR;
 }

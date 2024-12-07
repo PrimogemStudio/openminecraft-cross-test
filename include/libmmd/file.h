@@ -14,6 +14,9 @@ typedef struct {
 int mmd_file_open(const char* path, mmd_file_base* pResult);
 int mmd_file_wrap(uint64_t data_length, void* data, mmd_file_base* pResult);
 
+int mmd_file_check(mmd_file_base* file);
+int mmd_file_reset(mmd_file_base* file);
+
 }
 
 #endif
