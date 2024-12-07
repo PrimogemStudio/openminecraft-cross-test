@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "stdlib.h"
+#include <cstring>
 
 int mmd_file_open(mmd_file_base* pResult, const char* path) {
     if (!path) return MMD_NULL_PTR;
@@ -21,7 +22,7 @@ int mmd_file_open(mmd_file_base* pResult, const char* path) {
     fclose(fp);
 
     pResult->length = l;
-    pResult->data = data;
+    pResult->data = (uint8_t*) data;
     pResult->pointer = 0;
 
     return MMD_NO_ERROR;
@@ -32,7 +33,7 @@ int mmd_file_wrap(mmd_file_base* pResult, uint64_t data_length, void* data)
     if (!data) return MMD_NULL_PTR;
 
     pResult->length = data_length;
-    pResult->data = data;
+    pResult->data = (uint8_t*) data;
     pResult->pointer = 0;
 
     return MMD_NO_ERROR;
@@ -56,6 +57,29 @@ int mmd_file_reset(mmd_file_base* file)
 
 int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf)
 {
-    if (!file) return MMD_NULL_PTR;
+    if (!file || !file->data) return MMD_NULL_PTR;
+    if (file->pointer + 4 > file->length) return MMD_FILE_BUFFER_OVERFLOW;
+    memcpy(buf, file->data + file->pointer, length);
+
     return MMD_NO_ERROR;
+}
+
+int mmd_file_read_1byte(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 1, buf);
+}
+
+int mmd_file_read_2bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 2, buf);
+}
+
+int mmd_file_read_4bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 4, buf);
+}
+
+int mmd_file_read_8bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 8, buf);
 }

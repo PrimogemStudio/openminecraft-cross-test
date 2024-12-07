@@ -15,8 +15,11 @@ int main()
     }
 
     printf("%d\n", fb->length);
-    printf("%d\n", ((uint32_t*) fb->data)[0]);
+    // printf("%d\n", ((uint32_t*) fb->data)[0]);
     printf("%d\n", *((uint32_t*) ((const char*) "PMX ")));
+    int t;
+    mmd_file_read_nbytes(fb, 4, &t);
+    printf("%d\n", t);
 
 	return 0;
 }

@@ -8,7 +8,7 @@ extern "C" {
 typedef struct {
     uint64_t length;
     uint64_t pointer;
-    void* data;
+    uint8_t* data;
 } mmd_file_base;
 
 int mmd_file_open(mmd_file_base* pResult, const char* path);
