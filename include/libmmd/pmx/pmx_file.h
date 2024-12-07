@@ -23,7 +23,7 @@ typedef struct {
     uint8_t rigid_body_index_size;
 } mmd_pmx_file_header;
 
-int mmd_pmx_file_read_header(mmd_file_base* file, mmd_pmx_file_header* pResult);
+int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file);
 
 }
 

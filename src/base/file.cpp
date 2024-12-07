@@ -5,7 +5,7 @@
 #include "stdint.h"
 #include "stdlib.h"
 
-int mmd_file_open(const char* path, mmd_file_base* pResult) {
+int mmd_file_open(mmd_file_base* pResult, const char* path) {
     if (!path) return MMD_NULL_PTR;
     
     FILE* fp = fopen(path, "rb");
@@ -27,7 +27,7 @@ int mmd_file_open(const char* path, mmd_file_base* pResult) {
     return MMD_NO_ERROR;
 }
 
-int mmd_file_wrap(uint64_t data_length, void* data, mmd_file_base* pResult)
+int mmd_file_wrap(mmd_file_base* pResult, uint64_t data_length, void* data)
 {
     if (!data) return MMD_NULL_PTR;
 
@@ -43,5 +43,19 @@ int mmd_file_check(mmd_file_base* file)
     if (!file) return MMD_NULL_PTR;
     if (file->pointer >= file->length) return MMD_FILE_BUFFER_OVERFLOW;
 
+    return MMD_NO_ERROR;
+}
+
+int mmd_file_reset(mmd_file_base* file)
+{
+    if (!file) return MMD_NULL_PTR;
+    file->pointer = 0;
+    
+    return MMD_NO_ERROR;
+}
+
+int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf)
+{
+    if (!file) return MMD_NULL_PTR;
     return MMD_NO_ERROR;
 }
