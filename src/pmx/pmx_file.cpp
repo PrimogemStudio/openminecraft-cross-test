@@ -9,9 +9,14 @@ int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file)
     mmd_file_read_4bytes(file, &pmx_header);
 
     if (pmx_header != *((uint32_t*) ((const char*) "PMX "))) return MMD_PMX_FILE_INVAILD_HEADER;
-    float version;
-    mmd_file_read_4bytes(file, &version);
-    printf("%f", version);
+    
+    mmd_file_read_4bytes(file, &pResult->version);
+    mmd_file_read_1byte(file, &pResult->data_size);
+    mmd_file_read_1byte(file, &pResult->encode);
+    mmd_file_read_1byte(file, &pResult->vertex_index_size);
+    mmd_file_read_1byte(file, &pResult->texture_index_size);
+
+    printf("%d\n", file->pointer);
 
     return 0;
 }
