@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "libmmd/file.h"
 #include "libmmd/memory.h"
+#include "libmmd/pmx/pmx_file.h"
 #include "stdlib.h"
 
 int main()
@@ -15,11 +16,7 @@ int main()
     }
 
     printf("%d\n", fb->length);
-    // printf("%d\n", ((uint32_t*) fb->data)[0]);
-    printf("%d\n", *((uint32_t*) ((const char*) "PMX ")));
-    int t;
-    mmd_file_read_nbytes(fb, 4, &t);
-    printf("%d\n", t);
+    printf("%d\n", mmd_pmx_file_read_header(0, fb));
 
 	return 0;
 }

@@ -2,8 +2,9 @@
 #define _RETURN_CODES
 
 #define MMD_NO_ERROR 0
-#define MMD_FILE_NOT_FOUND 1
-#define MMD_NULL_PTR 2
+#define MMD_NULL_PTR 1
+#define MMD_FILE_NOT_FOUND 2
 #define MMD_FILE_BUFFER_OVERFLOW 3
+#define MMD_PMX_FILE_INVAILD_HEADER 4
 
 #endif
