@@ -129,7 +129,7 @@ jobs:
           sudo apt install gcc-multilib g++-multilib
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
-          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-W -Wno-undef" --ldflags="-W -Wno-undef"
+          xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build FreeBSD 

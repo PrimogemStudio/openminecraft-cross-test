@@ -13,6 +13,7 @@ int main()
 
     btDbvtBroadphase* t = new btDbvtBroadphase();
     printf("%lu\n", ((uint64_t) t));
+    printf(((int) '\0'));
 
     mmd_file_base fb;
 	if (mmd_file_open(&fb, "/home/coder2/mmd/lumine/lumine.pmx"))
