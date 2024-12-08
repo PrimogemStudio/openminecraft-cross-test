@@ -12,7 +12,7 @@ int main()
 	puts("test!");
 
     btDbvtBroadphase* t = new btDbvtBroadphase();
-    printf("%lu\n", ((uint64_t) t));
+    printf("%llu\n", ((uint64_t) t));
     printf(((int) '\0'));
 
     mmd_file_base fb;
