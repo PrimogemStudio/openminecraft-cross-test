@@ -24,7 +24,21 @@ typedef struct {
     uint8_t rigid_body_index_size;
 } mmd_pmx_file_header;
 
+typedef struct {
+    char* model_name;
+    char* model_comment;
+    char* english_name;
+    char* english_comment;
+} mmd_pmx_file_info;
+
+typedef struct {
+    mmd_pmx_file_header* header;
+    mmd_pmx_file_info* info;
+} mmd_pmx_file;
+
+int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);
 int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file);
+int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 
 }
 

@@ -22,19 +22,11 @@ int main()
         return 0;
     }
 
-    mmd_pmx_file_header pmx_header;
+    mmd_pmx_file pmx_file;
 
     printf("%llu\n", fb.length);
-    mmd_pmx_file_read_header(&pmx_header, &fb);
+    printf("%d\n", mmd_pmx_file_create(&pmx_file, &fb));
     printf("%llu\n", fb.pointer);
-
-    uint32_t length;
-    mmd_file_read_4bytes(&fb, &length);
-    char* str = (char*) mmd_memory_allocate(length + 1);
-    mmd_file_read_nbytes(&fb, length, str);
-    str[length] = '\0';
-    printf(mmd_encoding_utf16_to_utf8(str, length));
-    printf("\n");
 
 	return 0;
 }
