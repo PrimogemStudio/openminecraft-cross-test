@@ -17,8 +17,10 @@ int main()
 
     mmd_pmx_file_header pmx_header;
 
-    printf("%d\n", fb.length);
-    printf("%d\n", mmd_pmx_file_read_header(&pmx_header, &fb));
+    printf("%lu\n", fb.length);
+    mmd_pmx_file_read_header(&pmx_header, &fb);
+    printf("%lu\n", fb.pointer);
+
 
 	return 0;
 }
