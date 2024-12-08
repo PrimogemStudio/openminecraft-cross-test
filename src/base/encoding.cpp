@@ -96,6 +96,7 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
         }
     }
     target[basep] = '\0';
+    mmd_memory_deallocate(codepoints);
 
     return target;
 }
