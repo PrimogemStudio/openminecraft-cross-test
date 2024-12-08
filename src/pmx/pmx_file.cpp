@@ -15,6 +15,10 @@ int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file)
     mmd_file_read_1byte(file, &pResult->encode);
     mmd_file_read_1byte(file, &pResult->vertex_index_size);
     mmd_file_read_1byte(file, &pResult->texture_index_size);
+    mmd_file_read_1byte(file, &pResult->material_index_size);
+    mmd_file_read_1byte(file, &pResult->bone_index_size);
+    mmd_file_read_1byte(file, &pResult->morph_index_size);
+    mmd_file_read_1byte(file, &pResult->rigid_body_index_size);
 
     return 0;
 }

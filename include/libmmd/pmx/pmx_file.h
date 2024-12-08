@@ -3,6 +3,7 @@
 
 #include "libmmd/file.h"
 #include "stdlib.h"
+#include "stdint.h"
 
 extern "C" {
 

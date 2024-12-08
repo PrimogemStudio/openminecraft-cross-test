@@ -4,9 +4,15 @@
 #include "libmmd/pmx/pmx_file.h"
 #include "stdlib.h"
 
+#include <btBulletCollisionCommon.h>
+#include <btBulletDynamicsCommon.h>
+
 int main()
 {
 	puts("test!");
+
+    btDbvtBroadphase* t = new btDbvtBroadphase();
+    printf("%lu\n", ((uint64_t) t));
 
     mmd_file_base fb;
 	if (mmd_file_open(&fb, "/home/coder2/mmd/lumine/lumine.pmx"))
