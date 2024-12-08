@@ -17,7 +17,7 @@ int mmd_file_open(mmd_file_base* pResult, const char* path) {
     fseek(fp, 0, SEEK_SET);
 
     uint8_t* data = (uint8_t*) mmd_memory_allocate(l);
-    fgets((char*) data, l, fp);
+    if (!fgets((char*) data, l, fp)) return MMD_FILE_NOT_FOUND;
 
     fclose(fp);
 
