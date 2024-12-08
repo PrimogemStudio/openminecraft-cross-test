@@ -34,6 +34,7 @@ int main()
     mmd_file_read_nbytes(&fb, length, str);
     str[length] = '\0';
     printf(mmd_encoding_utf16_to_utf8(str, length));
+    printf("\n");
 
 	return 0;
 }
