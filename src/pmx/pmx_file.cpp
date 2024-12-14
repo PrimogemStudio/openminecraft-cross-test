@@ -5,11 +5,11 @@
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
 {
-    pResult->header = (mmd_pmx_file_header*) mmd_memory_allocate(sizeof(mmd_pmx_file_header));
+    pResult->header = mmd_memory_allocate_struct(mmd_pmx_file_header);
     if (!mmd_pmx_file_read_header(pResult->header, file)) return MMD_PMX_FILE_INVAILD_HEADER;
-    pResult->info = (mmd_pmx_file_info*) mmd_memory_allocate(sizeof(mmd_pmx_file_info));
+    pResult->info = mmd_memory_allocate_struct(mmd_pmx_file_info);
     if (!mmd_pmx_file_read_info(pResult->info, pResult->header, file)) return MMD_PMX_FILE_INVAILD_INFO;
-    pResult->vertices = (mmd_pmx_file_vertices*) mmd_memory_allocate(sizeof(mmd_pmx_file_vertices));
+    pResult->vertices = mmd_memory_allocate_struct(mmd_pmx_file_vertices);
     if (!mmd_pmx_file_read_vertices(pResult->vertices, pResult->header, file)) return MMD_PMX_FILE_INVAILD_VERTICES;
 
     return MMD_NO_ERROR;
@@ -48,8 +48,17 @@ int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* head
 int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
     mmd_file_read_4bytes(file, &pResult->length);
-    mmd_pmx_file_vertex vtx;
-    mmd_file_read_nbytes(file, 12, &vtx.position);
+    mmd_pmx_file_vertex* vtx = mmd_memory_allocate_struct(mmd_pmx_file_vertex);
+    mmd_file_read_12bytes(file, &vtx->position);
+    mmd_file_read_12bytes(file, &vtx->normal);
+    mmd_file_read_8bytes(file, &vtx->uv);
+
+    vtx->addition_uv = mmd_memory_allocate_struct(mmd_pmx_file_vertex_additional_uv);
+    uint8_t uvnum = header->add_uv_num;
+    vtx->addition_uv->length = uvnum;
+    vtx->addition_uv->data = (glm::vec4*) mmd_memory_allocate(16 * uvnum);
+    mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
+
     
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW; 
 }

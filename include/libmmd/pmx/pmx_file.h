@@ -39,6 +39,18 @@ typedef struct {
     glm::vec4* data;
 } mmd_pmx_file_vertex_additional_uv;
 
+typedef enum {
+    bdef1 = 0, 
+    bdef2, 
+    bdef4, 
+    sdef, 
+    qdef
+} mmd_pmx_file_vertex_bonetype;
+
+typedef struct {
+    uint32_t bone_index;
+} mmd_pmx_file_vertex_bdef1_bone;
+
 typedef struct {
     glm::vec3 position;
     glm::vec3 normal;
