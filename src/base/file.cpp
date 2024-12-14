@@ -1,6 +1,7 @@
 #include "libmmd/file.h"
 #include "libmmd/memory.h"
 #include "libmmd/return_codes.h"
+#include "libmmd/encoding.h"
 #include "stdio.h"
 #include "stdint.h"
 #include "stdlib.h"
@@ -83,4 +84,22 @@ int mmd_file_read_4bytes(mmd_file_base* file, void* buf)
 int mmd_file_read_8bytes(mmd_file_base* file, void* buf)
 {
     return mmd_file_read_nbytes(file, 8, buf);
+}
+
+int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, mmd_file_lengthed_string* str)
+{
+    int length;
+    int result = 0;
+    result = mmd_file_read_4bytes(file, &length);
+    if (result) return result;
+
+    char strc[length];
+    result = mmd_file_read_nbytes(file, length, strc);
+    if (result) return result;
+
+    char* conv = is_utf16 ? mmd_encoding_utf16_to_utf8(strc, (uint64_t) length) : strc;
+ 
+    str->length = (uint64_t) length;
+    str->data = conv;
+    return MMD_NO_ERROR;
 }

@@ -11,6 +11,11 @@ typedef struct {
     uint8_t* data;
 } mmd_file_base;
 
+typedef struct {
+    uint64_t length;
+    char* data;
+} mmd_file_lengthed_string;
+
 int mmd_file_open(mmd_file_base* pResult, const char* path);
 int mmd_file_wrap(mmd_file_base* pResult, uint64_t data_length, void* data);
 
@@ -22,6 +27,7 @@ int mmd_file_read_2bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_4bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_8bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf);
+int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, mmd_file_lengthed_string* str);
 
 }
 

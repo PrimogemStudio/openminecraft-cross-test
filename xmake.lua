@@ -19,4 +19,3 @@ files_conf()
 target("test")
 set_kind("binary")
 files_conf()
-

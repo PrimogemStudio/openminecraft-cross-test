@@ -13,7 +13,7 @@ int main()
 	puts("test!");
 
     btDbvtBroadphase* t = new btDbvtBroadphase();
-    printf("%llu\n", ((uint64_t) t));
+    printf("%lu\n", ((uint64_t) t));
      
     mmd_file_base fb;
 	if (mmd_file_open(&fb, "/home/coder2/mmd/lumine/lumine.pmx"))
@@ -24,9 +24,9 @@ int main()
 
     mmd_pmx_file pmx_file;
 
-    printf("%llu\n", fb.length);
+    printf("%lu\n", fb.length);
     printf("%d\n", mmd_pmx_file_create(&pmx_file, &fb));
-    printf("%llu\n", fb.pointer);
+    printf("%lu\n", fb.pointer);
 
 	return 0;
 }

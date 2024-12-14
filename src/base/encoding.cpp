@@ -1,6 +1,5 @@
 #include "libmmd/encoding.h"
 #include "libmmd/memory.h"
-#include "stdio.h"
 #include <cstring>
 
 bool mmd_encoding_is_utf16_high(uint16_t i)
@@ -17,13 +16,12 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
 {
     if (length % 2 != 0) return 0;
 
-    uint32_t* codepoints = (uint32_t*) mmd_memory_allocate(length * 2);
+    uint32_t codepoints[length * 2];
     uint64_t p = 0;
     uint64_t codepointp = 0;
 
     uint16_t* u16str = (uint16_t*) raw;
-    
-    while (p < length / 2)
+        while (p < length / 2)
     {
         if (mmd_encoding_is_utf16_high(u16str[p]))
         {
@@ -96,7 +94,6 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
         }
     }
     target[basep] = '\0';
-    mmd_memory_deallocate(codepoints);
 
     return target;
 }
