@@ -1,8 +1,23 @@
 #include "libmmd/memory.h"
 #include "libmmd/return_codes.h"
+#include "stdio.h"
+#include "stdint.h"
 
-mmd_memory_allocator _allocator = malloc;
-mmd_memory_deallocator _deallocator = free;
+void* mmdi_memory_allocate(size_t bytes)
+{
+    void* buf = malloc(bytes);
+    printf("mmdi_memory_allocate %ld\n", (uint64_t) buf);
+    return buf;
+}
+
+void mmdi_memory_deallocate(void* buf)
+{
+    printf("mmdi_memory_deallocate %ld\n", (uint64_t) buf);
+    free(buf);
+}
+
+mmd_memory_allocator _allocator = mmdi_memory_allocate;
+mmd_memory_deallocator _deallocator = mmdi_memory_deallocate;
 
 int mmd_memory_set_allocator(mmd_memory_allocator allocator)
 {

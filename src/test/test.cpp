@@ -28,5 +28,9 @@ int main()
     printf("%d\n", mmd_pmx_file_create(&pmx_file, &fb));
     printf("%lu\n", fb.pointer);
 
+    char* test;
+    mmd_file_read_lengthed_string(&fb, true, &test);
+    printf("%s\n", test);
+
 	return 0;
 }

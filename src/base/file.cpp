@@ -86,20 +86,21 @@ int mmd_file_read_8bytes(mmd_file_base* file, void* buf)
     return mmd_file_read_nbytes(file, 8, buf);
 }
 
-int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, mmd_file_lengthed_string* str)
+int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str)
 {
     int length;
     int result = 0;
     result = mmd_file_read_4bytes(file, &length);
     if (result) return result;
 
-    char strc[length];
+    char* strc = (char*) mmd_memory_allocate(length + 1);
     result = mmd_file_read_nbytes(file, length, strc);
+    strc[length] = '\0';
     if (result) return result;
 
     char* conv = is_utf16 ? mmd_encoding_utf16_to_utf8(strc, (uint64_t) length) : strc;
+    if (is_utf16) mmd_memory_deallocate(strc);
  
-    str->length = (uint64_t) length;
-    str->data = conv;
+    *str = conv;
     return MMD_NO_ERROR;
 }

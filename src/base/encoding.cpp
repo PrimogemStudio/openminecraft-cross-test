@@ -16,7 +16,7 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
 {
     if (length % 2 != 0) return 0;
 
-    uint32_t codepoints[length * 2];
+    uint32_t* codepoints = (uint32_t*) mmd_memory_allocate(length * 2 * sizeof(uint32_t));
     uint64_t p = 0;
     uint64_t codepointp = 0;
 
@@ -94,6 +94,7 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
         }
     }
     target[basep] = '\0';
+    mmd_memory_deallocate(codepoints);
 
     return target;
 }
