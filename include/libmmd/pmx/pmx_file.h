@@ -2,6 +2,9 @@
 #define PMX_FILE
 
 #include "libmmd/file.h"
+#include "glm/vec4.hpp"
+#include "glm/vec3.hpp"
+#include "glm/vec2.hpp"
 #include "stdlib.h"
 #include "stdint.h"
 
@@ -32,6 +35,24 @@ typedef struct {
 } mmd_pmx_file_info;
 
 typedef struct {
+    uint8_t length;
+    glm::vec4* data;
+} mmd_pmx_file_vertex_additional_uv;
+
+typedef struct {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 uv;
+    mmd_pmx_file_vertex_additional_uv* addition_uv;
+    
+} mmd_pmx_file_vertex;
+
+typedef struct {
+    uint64_t length;
+    mmd_pmx_file_vertex* data;
+} mmd_pmx_file_vertices;
+
+typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
 } mmd_pmx_file;
@@ -39,6 +60,7 @@ typedef struct {
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);
 int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file);
 int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
+int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 
 }
 

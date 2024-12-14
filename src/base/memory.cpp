@@ -6,13 +6,13 @@
 void* mmdi_memory_allocate(size_t bytes)
 {
     void* buf = malloc(bytes);
-    printf("mmdi_memory_allocate %ld\n", (uint64_t) buf);
+    printf("mmdi_memory_allocate 0x%lx\n", (uint64_t) buf);
     return buf;
 }
 
 void mmdi_memory_deallocate(void* buf)
 {
-    printf("mmdi_memory_deallocate %ld\n", (uint64_t) buf);
+    printf("mmdi_memory_deallocate 0x%lx\n", (uint64_t) buf);
     free(buf);
 }
 

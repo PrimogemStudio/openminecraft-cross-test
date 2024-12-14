@@ -8,6 +8,8 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
 {
     pResult->header = (mmd_pmx_file_header*) mmd_memory_allocate(sizeof(mmd_pmx_file_header));
     if (!mmd_pmx_file_read_header(pResult->header, file)) return MMD_PMX_FILE_INVAILD_HEADER;
+    pResult->info = (mmd_pmx_file_info*) mmd_memory_allocate(sizeof(mmd_pmx_file_info));
+    mmd_pmx_file_read_info(pResult->info, pResult->header, file);
 
     return MMD_NO_ERROR;
 }
@@ -35,5 +37,9 @@ int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file)
 
 int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
+    mmd_file_read_lengthed_string(file, !header->encode, &pResult->model_name);
+    mmd_file_read_lengthed_string(file, !header->encode, &pResult->model_comment);
+    mmd_file_read_lengthed_string(file, !header->encode, &pResult->english_name);
+    mmd_file_read_lengthed_string(file, !header->encode, &pResult->english_comment);
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }
