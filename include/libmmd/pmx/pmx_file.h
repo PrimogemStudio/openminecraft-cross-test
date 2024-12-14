@@ -55,6 +55,7 @@ typedef struct {
 typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
+    mmd_pmx_file_vertices* vertices;
 } mmd_pmx_file;
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);

@@ -24,6 +24,8 @@ int mmd_file_read_8bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf);
 int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str);
 
+int mmd_file_close(mmd_file_base* file);
+
 }
 
 #endif

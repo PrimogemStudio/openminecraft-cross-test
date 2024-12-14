@@ -104,3 +104,10 @@ int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str
     *str = conv;
     return MMD_NO_ERROR;
 }
+
+int mmd_file_close(mmd_file_base* file)
+{
+    if (!file || !file->data) return MMD_NULL_PTR;
+    mmd_memory_deallocate(file->data);
+    return MMD_NO_ERROR;
+}
