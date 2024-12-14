@@ -21,6 +21,10 @@ int mmd_file_read_1byte(mmd_file_base* file, void* buf);
 int mmd_file_read_2bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_4bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_8bytes(mmd_file_base* file, void* buf);
+int mmd_file_read_12bytes(mmd_file_base* file, void* buf);
+int mmd_file_read_16bytes(mmd_file_base* file, void* buf);
+int mmd_file_read_36bytes(mmd_file_base* file, void* buf);
+int mmd_file_read_64bytes(mmd_file_base* file, void* buf);
 int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf);
 int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str);
 

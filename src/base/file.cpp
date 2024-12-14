@@ -86,6 +86,26 @@ int mmd_file_read_8bytes(mmd_file_base* file, void* buf)
     return mmd_file_read_nbytes(file, 8, buf);
 }
 
+int mmd_file_read_12bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 12, buf);
+}
+
+int mmd_file_read_16bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 16, buf); 
+}
+
+int mmd_file_read_36bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 36, buf);
+}
+
+int mmd_file_read_64bytes(mmd_file_base* file, void* buf)
+{
+    return mmd_file_read_nbytes(file, 64, buf);
+}
+
 int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str)
 {
     int length;
