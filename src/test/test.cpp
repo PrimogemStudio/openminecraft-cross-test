@@ -20,7 +20,7 @@ int main()
 
     printf("%lu\n", fb.length);
     printf("%d\n", mmd_pmx_file_create(&pmx_file, &fb));
-    printf("+0x%x\n", fb.pointer);
+    printf("+0x%lx\n", fb.pointer);
 
     mmd_file_close(&fb);
 

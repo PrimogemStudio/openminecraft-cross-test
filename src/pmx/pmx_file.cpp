@@ -2,6 +2,7 @@
 #include "libmmd/file.h"
 #include "libmmd/memory.h"
 #include "libmmd/return_codes.h"
+#include "stdio.h"
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
 {
@@ -58,6 +59,17 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
     vtx->addition_uv->length = uvnum;
     vtx->addition_uv->data = (glm::vec4*) mmd_memory_allocate(16 * uvnum);
     mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
+    
+    mmd_file_read_1byte(file, &vtx->bone_type);
+    switch (vtx->bone_type)
+    {
+        case bdef1:
+            vtx->bone_data = mmd_memory_allocate_struct(mmd_pmx_file_vertex_bdef1_bone);
+
+            break;
+        default:
+            break;
+    }
 
     
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW; 

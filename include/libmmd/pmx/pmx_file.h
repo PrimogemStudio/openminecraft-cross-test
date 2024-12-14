@@ -39,12 +39,12 @@ typedef struct {
     glm::vec4* data;
 } mmd_pmx_file_vertex_additional_uv;
 
-typedef enum {
+typedef enum : uint8_t {
     bdef1 = 0, 
-    bdef2, 
-    bdef4, 
-    sdef, 
-    qdef
+    bdef2 = 1, 
+    bdef4 = 2, 
+    sdef = 3, 
+    qdef = 4
 } mmd_pmx_file_vertex_bonetype;
 
 typedef struct {
@@ -52,11 +52,39 @@ typedef struct {
 } mmd_pmx_file_vertex_bdef1_bone;
 
 typedef struct {
+    uint32_t bone_index1;
+    uint32_t bone_index2;
+    float bone_weight;
+} mmd_pmx_file_vertex_bdef2_bone;
+
+typedef struct {
+    uint32_t bone_index1;
+    uint32_t bone_index2;
+    float bone_weight;
+    glm::vec3 sdefc;
+    glm::vec3 sdefr0;
+    glm::vec3 sdefr1;
+} mmd_pmx_file_vertex_sdef_bone;
+
+typedef struct {
+    uint32_t bone_index1;
+    uint32_t bone_index2;
+    uint32_t bone_index3;
+    uint32_t bone_index4;
+    float bone_weight1;
+    float bone_weight2;
+    float bone_weight3;
+    float bone_weight4;
+} mmd_pmx_file_vertex_bdef4_qdef_bone;
+
+typedef struct {
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 uv;
     mmd_pmx_file_vertex_additional_uv* addition_uv;
-    
+    mmd_pmx_file_vertex_bonetype bone_type;
+    void* bone_data;
+    float edge_margin;
 } mmd_pmx_file_vertex;
 
 typedef struct {
