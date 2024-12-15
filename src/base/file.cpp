@@ -60,7 +60,7 @@ int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf)
 {
     if (!file || !file->data) return MMD_NULL_PTR;
     if (file->pointer + length > file->length) return MMD_FILE_BUFFER_OVERFLOW;
-    memcpy(buf, file->data + file->pointer, length);
+    mmd_memory_duplicate(buf, file->data + file->pointer, length);
     file->pointer += length;
 
     return MMD_NO_ERROR;
