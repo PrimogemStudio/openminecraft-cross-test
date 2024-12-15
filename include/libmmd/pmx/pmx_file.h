@@ -93,6 +93,17 @@ typedef struct {
 } mmd_pmx_file_vertices;
 
 typedef struct {
+    uint32_t face_index1;
+    uint32_t face_index2;
+    uint32_t face_index3;
+} mmd_pmx_file_face;
+
+typedef struct {
+    uint32_t length;
+    mmd_pmx_file_face* data;
+} mmd_pmx_file_faces;
+
+typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
     mmd_pmx_file_vertices* vertices;

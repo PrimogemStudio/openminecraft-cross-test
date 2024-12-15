@@ -70,7 +70,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         {
             vtx->bone_data = mmd_memory_allocate_struct(mmd_pmx_file_vertex_bdef1_bone);
             mmd_pmx_file_vertex_bdef1_bone* bone = (mmd_pmx_file_vertex_bdef1_bone*) vtx->bone_data;
-            mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index); 
+            mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index);
         }
         else if (vtx->bone_type == bdef2)
         {
