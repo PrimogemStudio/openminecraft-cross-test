@@ -66,6 +66,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
     
         mmd_file_read_1byte(file, &vtx->bone_type);
+        printf("%d %d\n", i, vtx->bone_type);
         if (vtx->bone_type == bdef1)
         {
             vtx->bone_data = mmd_memory_allocate_struct(mmd_pmx_file_vertex_bdef1_bone);
