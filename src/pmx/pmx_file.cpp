@@ -62,7 +62,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         uint8_t uvnum = header->add_uv_num;
         vtx->addition_uv->length = uvnum;
         vtx->addition_uv->data = mmd_memory_allocate_array(glm::vec4, uvnum);
-        mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
+        mmd_file_read_nbytes(file, sizeof(glm::vec4) * uvnum, vtx->addition_uv->data);
 
         mmd_file_read_1byte(file, &vtx->bone_type);
         
