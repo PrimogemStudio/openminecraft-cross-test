@@ -88,7 +88,7 @@ typedef struct {
 } mmd_pmx_file_vertex;
 
 typedef struct {
-    uint64_t length;
+    uint32_t length;
     mmd_pmx_file_vertex* data;
 } mmd_pmx_file_vertices;
 
