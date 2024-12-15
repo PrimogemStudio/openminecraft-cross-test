@@ -10,15 +10,15 @@
 int mmd_file_open(mmd_file_base* pResult, const char* path) {
     if (!path) return MMD_NULL_PTR;
     
-    FILE* fp = fopen(path, "rb");
+    FILE* fp = fopen(path, "r");
     if (!fp) return MMD_FILE_NOT_FOUND;
 
     fseek(fp, 0, SEEK_END);
     uint64_t l = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
+    fseek(fp, 0, SEEK_SET); 
 
-    uint8_t* data = mmd_memory_allocate_array(uint8_t, l);
-    if (!fgets((char*) data, l, fp)) return MMD_FILE_NOT_FOUND;
+    char* data = mmd_memory_allocate_array(char, l);
+    if (!fread(data, 1, l, fp)) return MMD_FILE_NOT_FOUND;
 
     fclose(fp);
 

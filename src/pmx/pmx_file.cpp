@@ -49,8 +49,7 @@ int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* head
 int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
     mmd_file_read_4bytes(file, &pResult->length);
-    pResult->data = mmd_memory_allocate_array(mmd_pmx_file_vertex, pResult->length);
-    uint32_t length = pResult->length;
+    pResult->data = mmd_memory_allocate_array(mmd_pmx_file_vertex, pResult->length); 
     
     for (int i = 0; i < pResult->length; i++)
     { 
@@ -64,14 +63,14 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         vtx->addition_uv->length = uvnum;
         vtx->addition_uv->data = mmd_memory_allocate_array(glm::vec4, uvnum);
         mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
-    
+
         mmd_file_read_1byte(file, &vtx->bone_type);
-        printf("%d %d\n", i, vtx->bone_type);
+        
         if (vtx->bone_type == bdef1)
         {
             vtx->bone_data = mmd_memory_allocate_struct(mmd_pmx_file_vertex_bdef1_bone);
             mmd_pmx_file_vertex_bdef1_bone* bone = (mmd_pmx_file_vertex_bdef1_bone*) vtx->bone_data;
-            mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index);
+            mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index); 
         }
         else if (vtx->bone_type == bdef2)
         {
@@ -110,8 +109,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
             return MMD_PMX_FILE_VERTEX_INVAILD_BONETYPE;
         }
 
-        mmd_file_read_4bytes(file, &vtx->edge_margin);
-
+        mmd_file_read_4bytes(file, &vtx->edge_margin); 
         if (mmd_file_check(file)) return MMD_FILE_BUFFER_OVERFLOW;
     }
     

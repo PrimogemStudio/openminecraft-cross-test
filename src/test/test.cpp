@@ -17,10 +17,9 @@ int main()
     }
 
     mmd_pmx_file pmx_file;
-
-    printf("%lu\n", fb.length);
-    printf("%d\n", mmd_pmx_file_create(&pmx_file, &fb));
-    printf("+0x%lx\n", fb.pointer);
+    
+    mmd_pmx_file_create(&pmx_file, &fb);
+    printf("+0x%lx total: 0x%x\n", fb.pointer, fb.length);
  
     mmd_file_close(&fb);
 

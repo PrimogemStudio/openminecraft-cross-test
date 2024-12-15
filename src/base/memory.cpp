@@ -4,7 +4,14 @@
 #include "stdint.h"
 #include <cstring>
 
-mmd_memory_allocator _allocator = malloc;
+void* mmdi_memory_allocate(size_t bytes)
+{
+    void* buf = malloc(bytes);
+    memset(buf, 0, bytes);
+    return buf;
+}
+
+mmd_memory_allocator _allocator = mmdi_memory_allocate;
 mmd_memory_deallocator _deallocator = free;
 mmd_memory_duplicator _duplicator = (mmd_memory_duplicator) memcpy;
 
