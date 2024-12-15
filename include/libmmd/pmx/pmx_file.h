@@ -107,12 +107,14 @@ typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
     mmd_pmx_file_vertices* vertices;
+    mmd_pmx_file_faces* faces;
 } mmd_pmx_file;
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);
 int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file);
 int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
+int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 
 }
 

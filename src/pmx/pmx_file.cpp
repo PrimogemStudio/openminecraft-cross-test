@@ -12,6 +12,8 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
     if (!mmd_pmx_file_read_info(pResult->info, pResult->header, file)) return MMD_PMX_FILE_INVAILD_INFO;
     pResult->vertices = mmd_memory_allocate_struct(mmd_pmx_file_vertices);
     if (!mmd_pmx_file_read_vertices(pResult->vertices, pResult->header, file)) return MMD_PMX_FILE_INVAILD_VERTICES;
+    pResult->faces = mmd_memory_allocate_struct(mmd_pmx_file_faces);
+    if (!mmd_pmx_file_read_faces(pResult->faces, pResult->header, file)) return MMD_PMX_FILE_INVAILD_FACES;
 
     return MMD_NO_ERROR;
 }
@@ -62,7 +64,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         uint8_t uvnum = header->add_uv_num;
         vtx->addition_uv->length = uvnum;
         vtx->addition_uv->data = mmd_memory_allocate_array(glm::vec4, uvnum);
-        mmd_file_read_nbytes(file, sizeof(glm::vec4) * uvnum, vtx->addition_uv->data);
+        mmd_file_read_array(file, uvnum, glm::vec4, vtx->addition_uv->data); 
 
         mmd_file_read_1byte(file, &vtx->bone_type);
         
@@ -113,5 +115,10 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         if (mmd_file_check(file)) return MMD_FILE_BUFFER_OVERFLOW;
     }
     
+    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
+}
+
+int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
+{
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW; 
 }
