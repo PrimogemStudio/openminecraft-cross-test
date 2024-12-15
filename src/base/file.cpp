@@ -17,7 +17,7 @@ int mmd_file_open(mmd_file_base* pResult, const char* path) {
     uint64_t l = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
-    uint8_t* data = (uint8_t*) mmd_memory_allocate(l);
+    uint8_t* data = mmd_memory_allocate_array(uint8_t, l);
     if (!fgets((char*) data, l, fp)) return MMD_FILE_NOT_FOUND;
 
     fclose(fp);
@@ -113,7 +113,7 @@ int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str
     result = mmd_file_read_4bytes(file, &length);
     if (result) return result;
 
-    char* strc = (char*) mmd_memory_allocate(length + 1);
+    char* strc = mmd_memory_allocate_array(char, length + 1);
     result = mmd_file_read_nbytes(file, length, strc);
     strc[length] = '\0';
     if (result) return result;

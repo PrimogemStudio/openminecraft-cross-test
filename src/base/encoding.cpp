@@ -16,7 +16,7 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
 {
     if (length % 2 != 0) return 0;
 
-    uint32_t* codepoints = (uint32_t*) mmd_memory_allocate(length * 2 * sizeof(uint32_t));
+    uint32_t* codepoints = mmd_memory_allocate_array(uint32_t, length * 2);
     uint64_t p = 0;
     uint64_t codepointp = 0;
 
@@ -61,7 +61,7 @@ char* mmd_encoding_utf16_to_utf8(char* raw, uint64_t length)
         else u8l += 4;
     }
 
-    char* target = (char*) mmd_memory_allocate(u8l + 1);
+    char* target = mmd_memory_allocate_array(char, u8l + 1);
     uint64_t basep = 0;
     for (uint64_t i = 0; i < codepointp; i++)
     {

@@ -51,7 +51,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
     mmd_file_read_4bytes(file, &pResult->length);
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_vertex, pResult->length);
     uint32_t length = pResult->length;
-    printf("%d %d\n", length, length - 17757);
+    
     for (int i = 0; i < pResult->length; i++)
     { 
         mmd_pmx_file_vertex* vtx = &pResult->data[i];
@@ -62,7 +62,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         vtx->addition_uv = mmd_memory_allocate_struct(mmd_pmx_file_vertex_additional_uv);
         uint8_t uvnum = header->add_uv_num;
         vtx->addition_uv->length = uvnum;
-        vtx->addition_uv->data = (glm::vec4*) mmd_memory_allocate(16 * uvnum);
+        vtx->addition_uv->data = mmd_memory_allocate_array(glm::vec4, uvnum);
         mmd_file_read_nbytes(file, 4 * uvnum, vtx->addition_uv->data);
     
         mmd_file_read_1byte(file, &vtx->bone_type);
