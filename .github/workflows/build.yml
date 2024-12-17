@@ -131,12 +131,16 @@ jobs:
         run: |
           mv build/macos/x86_64 build/macos/x64
 
-      - name: Build Android
+      - name: Setup Android NDK
         if: matrix.plat == 'android'
         run: |
           wget -q https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
           unzip -q android-ndk-r27c-linux.zip
-          xmake f -p android --ndk=./android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+
+      - name: Build Android
+        if: matrix.plat == 'android'
+        run: |
+          xmake f -p android --ndk=${{ env.PWD }}/android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux
