@@ -115,7 +115,7 @@ jobs:
           mv build/macosx build/macos
 
       - name: Build IOS
-        if: matrix.plate == 'ios'
+        if: matrix.plat == 'ios'
         run: |
           xmake -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
