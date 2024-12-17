@@ -136,10 +136,12 @@ jobs:
         run: |
           wget https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
           unzip android-ndk-r27c-linux.zip
-
+          
       - name: Build Android
         if: matrix.plat == 'android'
         run: |
+          echo ${{ env.PWD }}
+          ls
           xmake f -p android --ndk=${{ env.PWD }}/android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
