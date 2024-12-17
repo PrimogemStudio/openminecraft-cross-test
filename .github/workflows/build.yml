@@ -75,6 +75,11 @@ jobs:
             plat: macos
             arch: x64
 
+          - os: macos-14
+            name: IOS
+            plat: ios
+            arch: arm64
+
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -108,6 +113,12 @@ jobs:
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
           mv build/macosx build/macos
+
+      - name: Build IOS
+        if: matrix.plate == 'ios'
+        run: |
+          xmake -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix MacOS Target Path
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
