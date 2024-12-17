@@ -28,6 +28,11 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
+            name: Android
+            plat: android
+            arch: arm64
+
+          - os: ubuntu-latest
             name: Linux (x64)
             plat: linux
             arch: x64
@@ -125,6 +130,14 @@ jobs:
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
         run: |
           mv build/macos/x86_64 build/macos/x64
+
+      - name: Build Android
+        if: matrix.plat == 'android'
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
+          unzip android-ndk-r27c.zip
+          xmake f -p android --ndk=./android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux
         if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
