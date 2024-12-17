@@ -117,7 +117,7 @@ jobs:
       - name: Build IOS
         if: matrix.plat == 'ios'
         run: |
-          xmake -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix MacOS Target Path
