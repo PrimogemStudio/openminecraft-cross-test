@@ -43,6 +43,16 @@ jobs:
             arch: armeabi
 
           - os: ubuntu-latest
+            name: Android (x86)
+            plat: android
+            arch: x86
+
+          - os: ubuntu-latest
+            name: Android (x64)
+            plat: android
+            arch: x86_64
+
+          - os: ubuntu-latest
             name: Linux (x64)
             plat: linux
             arch: x64
