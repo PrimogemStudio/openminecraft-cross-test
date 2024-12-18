@@ -160,7 +160,7 @@ jobs:
           
           wget "$ASSET_URL"
           unzip commandline-tools-linux-2.0.0.2.zip
-          sudo apt list --installed | grep openjdk
+          sudo apt list | grep openjdk
           sudo apt autoremove openjdk-8-jre openjdk-11-jre openjdk-17-jre
           sudo apt install openjdk-21-jdk
           
