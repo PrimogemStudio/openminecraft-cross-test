@@ -159,7 +159,7 @@ jobs:
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
-          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 OpenHarmony/toolchains:9 --accept-license
+          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 OpenHarmony/toolchains:9 --accept-license --sdk-directory=${{ github.workplace }}
 
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
