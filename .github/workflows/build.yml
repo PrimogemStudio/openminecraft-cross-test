@@ -160,12 +160,12 @@ jobs:
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
           mkdir ${{ github.workspace }}/sdk
-          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 native:9 OpenHarmony/toolchains:9 --accept-license --sdk-directory=${{ github.workspace }}/sdk
+          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 native:5 OpenHarmony/toolchains:9 --accept-license --sdk-directory=${{ github.workspace }}/sdk
 
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
         run: |
-          ls ${{ github.workspace }}/sdk/openharmony/9
+          ls ${{ github.workspace }}/sdk/openharmony
           xmake f -p harmony --sdk=${{ github.workspace }}/sdk/openharmony/9/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
