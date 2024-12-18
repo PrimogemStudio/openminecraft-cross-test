@@ -27,6 +27,11 @@ jobs:
             plat: windows
             arch: arm64
 
+          - os: ubuntu-latest 
+            name: OpenHarmony
+            plat: harmony
+            arch: arm64
+
           - os: ubuntu-latest
             name: Android (Arm64)
             plat: android
@@ -145,6 +150,20 @@ jobs:
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
         run: |
           mv build/macos/x86_64 build/macos/x64
+
+      - name: Setup OpenHarmony SDK
+        if: matrix.plat == 'harmony'
+        run: |
+          RELEASE_JSON=$(curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/harmonyos-dev/hos-sdk/releases/latest)
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("commandline-tools-linux-2.0.0.2.zip")) | .browser_download_url')
+          wget "$ASSET_URL"
+          unzip commandline-tools-linux-2.0.0.2.zip
+
+      - name: Build OpenHarmony
+        if: matrix.plat == 'harmony'
+        run: |
+          xmake f -p harmony --sdk=${{ github.workspace }}/command-line-tools/sdk/default/openharmony/build -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Setup Android NDK
         if: matrix.plat == 'android'
