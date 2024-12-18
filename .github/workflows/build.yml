@@ -161,7 +161,7 @@ jobs:
           wget "$ASSET_URL"
           unzip commandline-tools-linux-2.0.0.2.zip
 
-          sudo apt install openjdk-17-jdk
+          sudo apt install openjdk-21-jdk
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
