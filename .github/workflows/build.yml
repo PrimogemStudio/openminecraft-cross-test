@@ -154,7 +154,15 @@ jobs:
       - name: Setup OpenHarmony SDK
         if: matrix.plat == 'harmony'
         run: |
+          RELEASE_JSON=$(curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/harmonyos-dev/hos-sdk/releases/latest)
+          
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("commandline-tools-linux-2.0.0.2.zip")) | .browser_download_url')
+          
+          wget "$ASSET_URL"
           unzip commandline-tools-linux-2.0.0.2.zip
+
+          chmod +x command-line-tools/sdkmanager/bin/sdkmgr
+          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 OpenHarmony/toolchains:9 --accept-license
 
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
