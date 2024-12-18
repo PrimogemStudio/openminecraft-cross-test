@@ -28,7 +28,7 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
-            name: Android
+            name: Android (Arm64-v8a)
             plat: android
             arch: arm64-v8a
 
@@ -140,7 +140,7 @@ jobs:
       - name: Build Android
         if: matrix.plat == 'android'
         run: |
-          xmake f -p android -a arm64-v8a --ndk=${{ github.workspace }}/android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake f -p android -a ${{ matrix.arch }} --ndk=${{ github.workspace }}/android-ndk-r27c -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux
