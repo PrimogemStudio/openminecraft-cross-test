@@ -165,8 +165,8 @@ jobs:
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
         run: |
-          ls ${{ github.workspace }}/sdk/openharmony
-          xmake f -p harmony --sdk=${{ github.workspace }}/sdk/openharmony/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          ls ${{ github.workspace }}/sdk/openharmony/9
+          xmake f -p harmony --sdk=${{ github.workspace }}/sdk/openharmony/9/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Setup Android NDK
