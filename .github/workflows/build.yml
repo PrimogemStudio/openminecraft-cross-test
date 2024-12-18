@@ -159,12 +159,13 @@ jobs:
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
-          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 OpenHarmony/toolchains:9 --accept-license --sdk-directory=${{ github.workplace }}
+          command-line-tools/sdkmanager/bin/sdkmgr install toolchains:9 OpenHarmony/toolchains:9 --accept-license
 
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
         run: |
           ls ${{ github.workspace }}/command-line-tools
+          find . -name "llvm*"
           xmake f -p harmony --sdk=${{ github.workspace }}/command-line-tools/sdk/default/openharmony/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
