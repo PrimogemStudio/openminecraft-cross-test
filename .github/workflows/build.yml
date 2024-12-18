@@ -154,8 +154,7 @@ jobs:
       - name: Setup OpenHarmony SDK
         if: matrix.plat == 'harmony'
         run: |
-          wget https://contentcenter-vali-drcn.dbankcdn.cn/pvt_2/DeveloperAlliance_package_901_9/f5/v3/9S75digfRDmH6pjQN2pAkA/commandline-tools-linux-x64-5.0.5.310.zip?HW-CC-KV=V1&HW-CC-Date=20241218T105527Z&HW-CC-Expire=7200&HW-CC-Sign=B6331C45B6985BE3DF23B6CC9DDD2B559C39A7E404F44D116A77902EC7D06236               
-         unzip commandline-tools-linux-2.0.0.2.zip
+          unzip commandline-tools-linux-2.0.0.2.zip
 
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
