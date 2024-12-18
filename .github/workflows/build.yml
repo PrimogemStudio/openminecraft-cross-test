@@ -158,7 +158,7 @@ jobs:
           
           ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("commandline-tools-macos-2.0.0.2.zip")) | .browser_download_url')
           
-          wget "$ASSET_URL"
+          curl -LJO "$ASSET_URL"
           unzip commandline-tools-macos-2.0.0.2.zip
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
