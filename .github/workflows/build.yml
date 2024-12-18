@@ -163,6 +163,8 @@ jobs:
 
           sudo apt remove default-jdk
           sudo apt install openjdk-21-jdk
+          
+          sudo update-java-alternatives --list
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
