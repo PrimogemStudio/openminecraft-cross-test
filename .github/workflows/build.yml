@@ -27,7 +27,7 @@ jobs:
             plat: windows
             arch: arm64
 
-          - os: ubuntu-latest 
+          - os: macos-latest
             name: OpenHarmony
             plat: harmony
             arch: arm64
@@ -156,15 +156,10 @@ jobs:
         run: |
           RELEASE_JSON=$(curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/harmonyos-dev/hos-sdk/releases/latest)
           
-          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("commandline-tools-linux-2.0.0.2.zip")) | .browser_download_url')
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("commandline-tools-macos-2.0.0.2.zip")) | .browser_download_url')
           
           wget "$ASSET_URL"
-          unzip commandline-tools-linux-2.0.0.2.zip
-          sudo -E apt-get -y purge zulu* openjdk* adoptopenjdk* || true
-    
-          sudo apt install openjdk-21-jdk
-          
-          java --version
+          unzip commandline-tools-macos-2.0.0.2.zip
           export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Duser.country=CN"
           
           chmod +x command-line-tools/sdkmanager/bin/sdkmgr
@@ -173,6 +168,7 @@ jobs:
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
         run: |
+          ls ${{ github.workspace }}/command-line-tools
           xmake f -p harmony --sdk=${{ github.workspace }}/command-line-tools/sdk/default/openharmony/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
