@@ -55,11 +55,6 @@ jobs:
             arch: armeabi-v7a
 
           - os: ubuntu-latest
-            name: Android (armeabi)
-            plat: android
-            arch: armeabi
-
-          - os: ubuntu-latest
             name: Android (x86)
             plat: android
             arch: x86
