@@ -29,9 +29,14 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
-            name: OpenHarmony
+            name: OpenHarmony (arm64-v8a)
             plat: harmony
             arch: arm64-v8a
+
+          - os: ubuntu-latest
+            name: OpenHarmony (armeabi-v7a)
+            plat: harmony
+            arch: armeabi-v7a
 
           - os: ubuntu-latest
             name: Android (arm64-v8a)
