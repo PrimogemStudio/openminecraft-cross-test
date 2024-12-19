@@ -29,6 +29,11 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
+            name: OpenHarmony
+            plat: harmony
+            arch: arm64-v8a
+
+          - os: ubuntu-latest
             name: Android (arm64-v8a)
             plat: android
             arch: arm64-v8a
@@ -156,6 +161,19 @@ jobs:
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
         run: |
           mv build/macos/x86_64 build/macos/x64
+
+      - name: Setup OpenHarmony SDK
+        if: matrix.plat == 'harmony'
+        run: |
+          wget https://repo.huaweicloud.com/openharmony/os/5.0.0-Release/ohos-sdk-windows_linux-public.tar.gz
+          tar -zxvf ohos-sdk-windows_linux-public.tar.gz
+          unzip linux/native*.zip
+          
+      - name: Build OpenHarmony
+        if: matrix.plat == 'harmony'
+        run: |
+          xmake f -p harmony -a ${{ matrix.arch }} --ndk=${{ github.workspace }}/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Setup Android NDK
         if: matrix.plat == 'android'
