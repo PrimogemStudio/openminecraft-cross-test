@@ -163,11 +163,6 @@ jobs:
           xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
           mv build/iphoneos build/ios
-
-      - name: Fix MacOS Target Path
-        if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
-        run: |
-          mv build/macos/x86_64 build/macos/x64
           
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
@@ -230,6 +225,11 @@ jobs:
         run: |
           xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+
+      - name: Fix MacOS Target Path
+        if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
+        run: |
+          mv build/macos/x86_64 build/macos/x64
 
       - name: Fix Path
         run: |
