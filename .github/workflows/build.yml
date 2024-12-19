@@ -101,7 +101,7 @@ jobs:
             libc_arch: ppc64el
 
           - os: ubuntu-latest
-            name: Linux (riacv)
+            name: Linux (riscv)
             plat: linux
             arch: riscv64
             triplet: riscv64-linux-gnu
@@ -134,12 +134,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Install LLVM and Clang (Linux)
-        if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
-        uses: PrimogemStudio/openminecraft-llvm-install@main
-        with:
-          arm: false
 
       - name: Install xmake
         if: matrix.plat != 'freebsd'
