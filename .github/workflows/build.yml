@@ -29,17 +29,17 @@ jobs:
             arch: arm64
 
           - os: ubuntu-latest
-            name: Android (Arm64-v8a)
+            name: Android (arm64-v8a)
             plat: android
             arch: arm64-v8a
 
           - os: ubuntu-latest
-            name: Android (Armeabi-v7a)
+            name: Android (armeabi-v7a)
             plat: android
             arch: armeabi-v7a
 
           - os: ubuntu-latest
-            name: Android (Armeabi)
+            name: Android (armeabi)
             plat: android
             arch: armeabi
 
@@ -52,6 +52,11 @@ jobs:
             name: Android (x64)
             plat: android
             arch: x86_64
+
+          - os: ubuntu-latest
+            name: Android (riscv64)
+            plat: android
+            arch: riscv64
 
           - os: ubuntu-latest
             name: Linux (x64)
