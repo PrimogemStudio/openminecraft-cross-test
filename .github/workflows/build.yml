@@ -40,11 +40,6 @@ jobs:
             arch: armeabi-v7a
 
           - os: ubuntu-latest
-            name: OpenHarmony (x86)
-            plat: harmony
-            arch: x86
-
-          - os: ubuntu-latest
             name: OpenHarmony (x86_64)
             plat: harmony
             arch: x86_64
@@ -140,12 +135,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install LLVM and Clang (MacOS)
-        if: matrix.plat == 'macos'
-        uses: PrimogemStudio/openminecraft-llvm-install@main
-        with:
-          arm: ${{ matrix.arch == 'arm64' }}
-
       - name: Install LLVM and Clang (Linux)
         if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
         uses: PrimogemStudio/openminecraft-llvm-install@main
@@ -161,7 +150,7 @@ jobs:
       - name: Build MacOS
         if: matrix.plat == 'macos'
         run: |
-          xmake f --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
           mv build/macosx build/macos
