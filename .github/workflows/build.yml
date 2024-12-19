@@ -25,7 +25,7 @@ jobs:
             arch: x86
 
           - os: windows-latest
-            name: Windows (Arm64)
+            name: Windows (arm64)
             plat: windows
             arch: arm64
 
@@ -80,28 +80,28 @@ jobs:
             arch: x64
 
           - os: ubuntu-latest
-            name: Linux (Arm64)
+            name: Linux (arm64)
             plat: linux
             arch: arm64
             triplet: aarch64-linux-gnu
             libc_arch: arm64
 
           - os: ubuntu-latest
-            name: Linux (Arm32)
+            name: Linux (arm32)
             plat: linux
             arch: arm32
             triplet: arm-linux-gnueabihf
             libc_arch: armhf
 
           - os: ubuntu-latest
-            name: Linux (PPC64)
+            name: Linux (ppc64)
             plat: linux
             arch: ppc64le
             triplet: powerpc64le-linux-gnu
             libc_arch: ppc64el
 
           - os: ubuntu-latest
-            name: Linux (RISCV)
+            name: Linux (riacv)
             plat: linux
             arch: riscv64
             triplet: riscv64-linux-gnu
@@ -113,7 +113,7 @@ jobs:
             arch: x64
 
           - os: macos-14
-            name: MacOS (Arm64)
+            name: MacOS (arm64)
             plat: macos
             arch: arm64
 
@@ -195,9 +195,7 @@ jobs:
       - name: Build Linux
         if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
         run: |
-          sudo apt update
-          sudo apt install gcc-multilib g++-multilib
-          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} --toolchain=llvm --sdk="${{ env.LLVM_PATH }}" -yc ${{ env.XMAKE_ARGS }}
+          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build Linux Cross
