@@ -238,10 +238,6 @@ jobs:
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
 
-      - name: Configure MSVC
-        if: matrix.plat == 'windows'
-        uses: ilammy/msvc-dev-cmd@v1
-
       - name: Build Windows
         if: matrix.plat == 'windows'
         run: |
