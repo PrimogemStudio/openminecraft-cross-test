@@ -59,6 +59,16 @@ jobs:
             arch: riscv64
 
           - os: ubuntu-latest
+            name: Android (mips)
+            plat: android
+            arch: mips
+
+          - os: ubuntu-latest
+            name: Android (mip64)
+            plat: android
+            arch: mip64
+
+          - os: ubuntu-latest
             name: Linux (x64)
             plat: linux
             arch: x64
