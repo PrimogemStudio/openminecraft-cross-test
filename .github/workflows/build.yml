@@ -262,15 +262,14 @@ jobs:
         if: matrix.plat == 'windows'
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          mv ${{ env.MODE }}/*.dll .
-          mv ${{ env.MODE }}/*.exe .
+          mv ${{ env.MODE }}/* .
           cd ../../..
 
       - name: Fix Path (Unix)
         if: matrix.plat != 'windows'
         run: |
           cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          bash -c "mv ${{ env.MODE }}/* ."
+          mv ${{ env.MODE }}/* .
           cd ../../..
 
       - name: Upload Artifacts
