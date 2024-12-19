@@ -6,6 +6,7 @@ env:
   MODE: release
   XMAKE_ARGS: -v
   ANDROID_NDK_VERSION: r27c
+  OHOS_SDK_VERSION: 5.0.0-Release
 
 jobs:
   build:
@@ -180,7 +181,7 @@ jobs:
       - name: Setup OpenHarmony SDK
         if: matrix.plat == 'harmony'
         run: |
-          wget https://repo.huaweicloud.com/openharmony/os/5.0.0-Release/ohos-sdk-windows_linux-public.tar.gz
+          wget https://repo.huaweicloud.com/openharmony/os/${{ env.OHOS_SDK_VERSION }}/ohos-sdk-windows_linux-public.tar.gz
           tar -zxvf ohos-sdk-windows_linux-public.tar.gz
           unzip linux/native*.zip
           
