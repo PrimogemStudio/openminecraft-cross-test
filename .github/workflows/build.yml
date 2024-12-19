@@ -141,6 +141,19 @@ jobs:
         with:
           xmake-version: branch@master
 
+      - name: Setup OpenHarmony SDK
+        if: matrix.plat == 'harmony'
+        run: |
+          wget https://repo.huaweicloud.com/openharmony/os/${{ env.OHOS_SDK_VERSION }}/ohos-sdk-windows_linux-public.tar.gz
+          tar -zxvf ohos-sdk-windows_linux-public.tar.gz
+          unzip linux/native*.zip
+
+      - name: Setup Android NDK
+        if: matrix.plat == 'android'
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
+          unzip android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
+
       - name: Build MacOS
         if: matrix.plat == 'macos'
         run: |
@@ -160,13 +173,6 @@ jobs:
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
         run: |
           mv build/macos/x86_64 build/macos/x64
-
-      - name: Setup OpenHarmony SDK
-        if: matrix.plat == 'harmony'
-        run: |
-          wget https://repo.huaweicloud.com/openharmony/os/${{ env.OHOS_SDK_VERSION }}/ohos-sdk-windows_linux-public.tar.gz
-          tar -zxvf ohos-sdk-windows_linux-public.tar.gz
-          unzip linux/native*.zip
           
       - name: Build OpenHarmony
         if: matrix.plat == 'harmony'
@@ -174,12 +180,6 @@ jobs:
           xmake f -p harmony -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-      - name: Setup Android NDK
-        if: matrix.plat == 'android'
-        run: |
-          wget https://dl.google.com/android/repository/android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
-          unzip android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
-          
       - name: Build Android
         if: matrix.plat == 'android'
         run: |
