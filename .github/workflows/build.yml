@@ -103,6 +103,13 @@ jobs:
             libc_arch: riscv64
 
           - os: ubuntu-latest
+            name: Linux (loongarch64)
+            plat: linux
+            arch: loong64
+            triplet: loongarch64-linux-gnu
+            libc_arch: loong64
+
+          - os: ubuntu-latest
             name: FreeBSD
             plat: freebsd
             arch: x64
