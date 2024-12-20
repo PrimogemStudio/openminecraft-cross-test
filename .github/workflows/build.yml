@@ -108,9 +108,14 @@ jobs:
             arch: loong64
 
           - os: ubuntu-latest
-            name: FreeBSD
+            name: FreeBSD (x64)
             plat: freebsd
             arch: x64
+
+          - os: ubuntu-latest
+            name: FreeBSD (arm64)
+            plat: freebsd
+            arch: arm64
 
           - os: macos-14
             name: MacOS (arm64)
@@ -190,8 +195,8 @@ jobs:
           tar -Jxvf x86_64-cross-tools-loongarch64-binutils_2.43.1-gcc_14.2.0-glibc_2.40.tar.xz
           xmake f -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/cross-tools -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
 
-      - name: Build FreeBSD
-        if: matrix.plat == 'freebsd'
+      - name: Build FreeBSD (x86_64)
+        if: matrix.plat == 'freebsd' && matrix.arch == 'x64'
         uses: cross-platform-actions/action@v0.25.0
         with:
           operating_system: freebsd
@@ -217,6 +222,33 @@ jobs:
 
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
+
+      - name: Build FreeBSD (arm64)
+        if: matrix.plat == 'freebsd' && matrix.arch == 'arm64'
+        uses: cross-platform-actions/action@v0.25.0
+        with:
+          operating_system: freebsd
+          architecture: arm64
+          version: '13.3'
+          memory: 8G
+          shell: bash
+          environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
+          run: |
+            sudo pkg install -y git cmake ninja gmake
+            git clone --recursive https://github.com/xmake-io/xmake.git
+            cd ./xmake
+
+            /usr/bin/make --version
+            ./configure --make=/usr/bin/make
+            gmake
+            ./scripts/get.sh __local__ __install_only__
+            source ~/.xmake/profile
+            cd ..
+
+            xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+            xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+
+            mv build/bsd build/freebsd
 
       - name: Configure Windows
         if: matrix.plat == 'windows'
