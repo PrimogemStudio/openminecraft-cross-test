@@ -123,8 +123,8 @@ jobs:
             arch: x64
 
           - os: macos-14
-            name: IOS
-            plat: ios
+            name: IphoneOS
+            plat: iphoneos
             arch: arm64
 
     name: Build ${{ matrix.name }}
@@ -156,38 +156,25 @@ jobs:
 
       - name: Build MacOS
         if: matrix.plat == 'macos'
-        run: |
-          xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+        run: xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
 
-          mv build/macosx build/macos
-
-      - name: Build IOS
-        if: matrix.plat == 'ios'
-        run: |
-          xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
-          mv build/iphoneos build/ios
+      - name: Configure IOS
+        if: matrix.plat == 'iphoneos'
+        run: xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           
-      - name: Build OpenHarmony
+      - name: Configure OpenHarmony
         if: matrix.plat == 'harmony'
-        run: |
-          xmake f -p harmony -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+        run: xmake f -p harmony -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/native -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
 
-      - name: Build Android
+      - name: Configure Android
         if: matrix.plat == 'android'
-        run: |
-          xmake f -p android -a ${{ matrix.arch }} --ndk=${{ github.workspace }}/android-ndk-${{ env.ANDROID_NDK_VERSION }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+        run: xmake f -p android -a ${{ matrix.arch }} --ndk=${{ github.workspace }}/android-ndk-${{ env.ANDROID_NDK_VERSION }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
 
-      - name: Build Linux
+      - name: Configure Linux
         if: ${{ matrix.plat == 'linux' && matrix.arch == 'x64' }}
-        run: |
-          xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+        run: xmake f -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
 
-      - name: Build Linux Cross
+      - name: Configure Linux Cross
         if: ${{ matrix.plat == 'linux' && matrix.arch != 'x64' && matrix.arch != 'loong64' }}
         run: |
           sudo apt update
@@ -195,17 +182,15 @@ jobs:
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
           xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-      - name: Build Linux LoongArch
-        if: ${{ matrix.plat == 'linux' &&  matrix.arch == 'loong64' }}
+      - name: Configure Linux LoongArch
+        if: ${{ matrix.plat == 'linux' && matrix.arch == 'loong64' }}
         run: |
           wget https://github.com/loongson/build-tools/releases/download/2024.11.01/x86_64-cross-tools-loongarch64-binutils_2.43.1-gcc_14.2.0-glibc_2.40.tar.xz
           tar -Jxvf x86_64-cross-tools-loongarch64-binutils_2.43.1-gcc_14.2.0-glibc_2.40.tar.xz
-          xmake f -a loong64 --sdk=${{ github.workspace }}/cross-tools -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+          xmake f -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/cross-tools -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
 
-      - name: Build FreeBSD 
+      - name: Build FreeBSD
         if: matrix.plat == 'freebsd'
         uses: cross-platform-actions/action@v0.25.0
         with:
@@ -233,16 +218,21 @@ jobs:
             mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
 
-      - name: Build Windows
+      - name: Configure Windows
         if: matrix.plat == 'windows'
-        run: |
-          xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
+        run: xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          
+      - name: Build
+        if: matrix.plat != 'freebsd'
+        run: xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-      - name: Fix MacOS Target Path
+      - name: Fix MacOS Target Path (Stage 1)
+        if: ${{ matrix.plat == 'macos' }}
+        run: mv build/macosx build/macos
+
+      - name: Fix MacOS Target Path (Stage 2)
         if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
-        run: |
-          mv build/macos/x86_64 build/macos/x64
+        run: mv build/macos/x86_64 build/macos/x64
 
       - name: Fix Path
         run: |
