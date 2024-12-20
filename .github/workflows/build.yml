@@ -117,7 +117,7 @@ jobs:
             plat: freebsd
             arch: arm64
 
-          - os: macos-14
+          - os: macos-latest
             name: MacOS (arm64)
             plat: macos
             arch: arm64
@@ -127,7 +127,7 @@ jobs:
             plat: macos
             arch: x64
 
-          - os: macos-14
+          - os: macos-latest
             name: IphoneOS
             plat: iphoneos
             arch: arm64
