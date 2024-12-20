@@ -102,7 +102,7 @@ jobs:
             triplet: riscv64-linux-gnu
             libc_arch: riscv64
 
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             name: Linux (loongarch64)
             plat: linux
             arch: loong64
