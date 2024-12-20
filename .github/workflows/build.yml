@@ -194,6 +194,14 @@ jobs:
           wget https://github.com/loongson/build-tools/releases/download/2024.11.01/x86_64-cross-tools-loongarch64-binutils_2.43.1-gcc_14.2.0-glibc_2.40.tar.xz
           tar -Jxvf x86_64-cross-tools-loongarch64-binutils_2.43.1-gcc_14.2.0-glibc_2.40.tar.xz
           xmake f -a ${{ matrix.arch }} --sdk=${{ github.workspace }}/cross-tools -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
+ 
+      - name: Configure Windows
+        if: matrix.plat == 'windows'
+        run: xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+          
+      - name: Build
+        if: matrix.plat != 'freebsd'
+        run: xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Build FreeBSD (x86_64)
         if: matrix.plat == 'freebsd' && matrix.arch == 'x64'
@@ -249,14 +257,6 @@ jobs:
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
             mv build/bsd build/freebsd
-
-      - name: Configure Windows
-        if: matrix.plat == 'windows'
-        run: xmake f --toolchain=msvc -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-          
-      - name: Build
-        if: matrix.plat != 'freebsd'
-        run: xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
       - name: Fix MacOS Target Path (Stage 1)
         if: ${{ matrix.plat == 'macos' }}
