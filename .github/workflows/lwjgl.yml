@@ -22,7 +22,8 @@ jobs:
         run: |
           git clone https://github.com/LWJGL/lwjgl3
           cd lwjgl3
-          yes | ant -Dplatform.macos=true compile compile-native 
+          yes | ant -Dplatform.macos=true compile-templates
+          yes | ant -Dplatform.macos=true compile-native
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
