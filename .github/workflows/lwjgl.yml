@@ -1,0 +1,34 @@
+name: Build LWJGL (IOS & Android)
+on: [push, pull_request]
+env:
+  LIBFFI_VERSION: 3.4.4
+  ANDROID_NDK_VERSION: r27c
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            name: IOS
+            plat: ios
+
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Build IOS
+        if: ${{ matrix.plat }} == 'ios'
+        run: |
+          git clone https://github.com/LWJGL/lwjgl3
+          cd lwjgl3
+          yes | ant -Dplatform.macos=true compile compile-native 
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: bin
+     
+
+            

@@ -1,4 +1,4 @@
-name: Build
+name: Build Lib
 on: [push, pull_request]
 env:
   LINK_JOBS: 16
