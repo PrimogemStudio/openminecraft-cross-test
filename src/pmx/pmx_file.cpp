@@ -157,7 +157,7 @@ int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_he
     mmd_file_read(file, uint32_t, &pResult->length);
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_material, pResult->length);
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < pResult->length; i++)
     {
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].name);
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].english_name);
@@ -166,6 +166,15 @@ int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_he
         mmd_file_read(file, float, &pResult->data[i].specular_power);
         mmd_file_read(file, glm::vec3, &pResult->data[i].ambient);
         mmd_file_read(file, mmd_pmx_file_material_drawmode_flags, &pResult->data[i].draw_mode);
+        mmd_file_read(file, glm::vec4, &pResult->data[i].edge_color);
+        mmd_file_read(file, float, &pResult->data[i].edge_size);
+        mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].texture_index);
+        mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].sphere_texture_index);
+        mmd_file_read(file, mmd_pmx_file_material_sphere_mode, &pResult->data[i].sphere_mode);
+        mmd_file_read(file, mmd_pmx_file_material_toon_mode, &pResult->data[i].toon_mode);
+        mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].toon_texture_index);
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].meno);
+        mmd_file_read(file, int, &pResult->data[i].affected_faces);
     }
 
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
