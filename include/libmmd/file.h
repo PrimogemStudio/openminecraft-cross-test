@@ -29,6 +29,7 @@ int mmd_file_read_nbytes(mmd_file_base* file, uint64_t length, void* buf);
 int mmd_file_read_lengthed_string(mmd_file_base* file, bool is_utf16, char** str);
 
 #define mmd_file_read_array(file, n, type, buf) mmd_file_read_nbytes(file, n * sizeof(type), buf)
+#define mmd_file_read(file, type, buf) mmd_file_read_nbytes(file, sizeof(type), buf)
 
 int mmd_file_close(mmd_file_base* file);
 

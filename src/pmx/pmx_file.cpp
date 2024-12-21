@@ -25,20 +25,20 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
 int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file)
 {
     uint32_t pmx_header;
-    mmd_file_read_4bytes(file, &pmx_header);
+    mmd_file_read(file, uint32_t, &pmx_header);
 
     if (pmx_header != *((uint32_t*) ((const char*) "PMX "))) return MMD_PMX_FILE_INVALID_HEADER;
     
-    mmd_file_read_4bytes(file, &pResult->version);
-    mmd_file_read_1byte(file, &pResult->data_size);
-    mmd_file_read_1byte(file, &pResult->encode);
-    mmd_file_read_1byte(file, &pResult->add_uv_num);
-    mmd_file_read_1byte(file, &pResult->vertex_index_size);
-    mmd_file_read_1byte(file, &pResult->texture_index_size);
-    mmd_file_read_1byte(file, &pResult->material_index_size);
-    mmd_file_read_1byte(file, &pResult->bone_index_size);
-    mmd_file_read_1byte(file, &pResult->morph_index_size);
-    mmd_file_read_1byte(file, &pResult->rigid_body_index_size);
+    mmd_file_read(file, float, &pResult->version);
+    mmd_file_read(file, uint8_t, &pResult->data_size);
+    mmd_file_read(file, uint8_t, &pResult->encode);
+    mmd_file_read(file, uint8_t, &pResult->add_uv_num);
+    mmd_file_read(file, uint8_t, &pResult->vertex_index_size);
+    mmd_file_read(file, uint8_t, &pResult->texture_index_size);
+    mmd_file_read(file, uint8_t, &pResult->material_index_size);
+    mmd_file_read(file, uint8_t, &pResult->bone_index_size);
+    mmd_file_read(file, uint8_t, &pResult->morph_index_size);
+    mmd_file_read(file, uint8_t, &pResult->rigid_body_index_size);
 
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }
@@ -60,9 +60,9 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
     for (int i = 0; i < pResult->length; i++)
     { 
         mmd_pmx_file_vertex* vtx = &pResult->data[i];
-        mmd_file_read_12bytes(file, &vtx->position);
-        mmd_file_read_12bytes(file, &vtx->normal);
-        mmd_file_read_8bytes(file, &vtx->uv);
+        mmd_file_read(file, glm::vec3, &vtx->position);
+        mmd_file_read(file, glm::vec3, &vtx->normal);
+        mmd_file_read(file, glm::vec2, &vtx->uv);
 
         vtx->addition_uv = mmd_memory_allocate_struct(mmd_pmx_file_vertex_additional_uv);
         uint8_t uvnum = header->add_uv_num;
@@ -70,7 +70,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         vtx->addition_uv->data = mmd_memory_allocate_array(glm::vec4, uvnum);
         mmd_file_read_array(file, uvnum, glm::vec4, vtx->addition_uv->data); 
 
-        mmd_file_read_1byte(file, &vtx->bone_type);
+        mmd_file_read(file, mmd_pmx_file_vertex_bonetype, &vtx->bone_type);
         
         if (vtx->bone_type == bdef1)
         {
@@ -84,7 +84,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
             mmd_pmx_file_vertex_bdef2_bone* bone = (mmd_pmx_file_vertex_bdef2_bone*) vtx->bone_data;
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index1);
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index2);
-            mmd_file_read_4bytes(file, &bone->bone_weight);
+            mmd_file_read(file, float, &bone->bone_weight);
         }
         else if (vtx->bone_type == sdef)
         {
@@ -92,10 +92,10 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
             mmd_pmx_file_vertex_sdef_bone* bone = (mmd_pmx_file_vertex_sdef_bone*) vtx->bone_data;
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index1);
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index2);
-            mmd_file_read_4bytes(file, &bone->bone_weight);
-            mmd_file_read_12bytes(file, &bone->sdefc);
-            mmd_file_read_12bytes(file, &bone->sdefr0);
-            mmd_file_read_12bytes(file, &bone->sdefr1);
+            mmd_file_read(file, float, &bone->bone_weight);
+            mmd_file_read(file, glm::vec3, &bone->sdefc);
+            mmd_file_read(file, glm::vec3, &bone->sdefr0);
+            mmd_file_read(file, glm::vec3, &bone->sdefr1);
         }
         else if (vtx->bone_type == bdef4 || vtx->bone_type == qdef)
         {
@@ -105,17 +105,17 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index2);
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index3);
             mmd_file_read_nbytes(file, header->bone_index_size, &bone->bone_index4);
-            mmd_file_read_4bytes(file, &bone->bone_weight1);
-            mmd_file_read_4bytes(file, &bone->bone_weight2);
-            mmd_file_read_4bytes(file, &bone->bone_weight3);
-            mmd_file_read_4bytes(file, &bone->bone_weight4);
+            mmd_file_read(file, float, &bone->bone_weight1);
+            mmd_file_read(file, float, &bone->bone_weight2);
+            mmd_file_read(file, float, &bone->bone_weight3);
+            mmd_file_read(file, float, &bone->bone_weight4);
         }
         else
         {
             return MMD_PMX_FILE_VERTEX_INVALID_BONETYPE;
         }
 
-        mmd_file_read_4bytes(file, &vtx->edge_margin); 
+        mmd_file_read(file, float, &vtx->edge_margin); 
         if (mmd_file_check(file)) return MMD_FILE_BUFFER_OVERFLOW;
     }
     
@@ -124,7 +124,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
 
 int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
-    mmd_file_read_4bytes(file, &pResult->length);
+    mmd_file_read(file, uint32_t, &pResult->length);
     if (pResult->length % 3 != 0) return MMD_PMX_FILE_INVALID_FACES;
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_face, pResult->length / 3);
 
@@ -141,7 +141,7 @@ int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* he
 
 int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
-    mmd_file_read_4bytes(file, &pResult->length);
+    mmd_file_read(file, uint32_t, &pResult->length);
     pResult->data = mmd_memory_allocate_array(char*, pResult->length);
 
     for (int i = 0; i < pResult->length; i++)
@@ -154,14 +154,17 @@ int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_head
 
 int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
-    mmd_file_read_4bytes(file, &pResult->length);
+    mmd_file_read(file, uint32_t, &pResult->length);
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_material, pResult->length);
 
     for (int i = 0; i < 1; i++)
     {
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].name);
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].english_name);
-        mmd_file_read_16bytes(file, &pResult->data[i].diffuse);
+        mmd_file_read(file, glm::vec4, &pResult->data[i].diffuse);
+        mmd_file_read(file, glm::vec3, &pResult->data[i].specular);
+        mmd_file_read(file, float, &pResult->data[i].specular_power);
+        mmd_file_read(file, glm::vec3, &pResult->data[i].ambient);
     }
 
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
