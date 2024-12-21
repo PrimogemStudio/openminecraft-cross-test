@@ -165,6 +165,7 @@ int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_he
         mmd_file_read(file, glm::vec3, &pResult->data[i].specular);
         mmd_file_read(file, float, &pResult->data[i].specular_power);
         mmd_file_read(file, glm::vec3, &pResult->data[i].ambient);
+        mmd_file_read(file, mmd_pmx_file_material_drawmode_flags, &pResult->data[i].draw_mode);
     }
 
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
