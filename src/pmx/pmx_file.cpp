@@ -139,5 +139,13 @@ int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* he
 
 int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
+    mmd_file_read_4bytes(file, &pResult->length);
+    pResult->data = mmd_memory_allocate_array(char*, pResult->length);
+
+    for (int i = 0; i < pResult->length; i++)
+    {
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i]);
+    }
+
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }
