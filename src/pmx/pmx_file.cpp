@@ -16,6 +16,8 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
     if (!mmd_pmx_file_read_faces(pResult->faces, pResult->header, file)) return MMD_PMX_FILE_INVALID_FACES;
     pResult->textures = mmd_memory_allocate_struct(mmd_pmx_file_textures);
     if (!mmd_pmx_file_read_textures(pResult->textures, pResult->header, file)) return MMD_PMX_FILE_INVALID_TEXTURES;
+    pResult->materials = mmd_memory_allocate_struct(mmd_pmx_file_materials);
+    if (!mmd_pmx_file_read_materials(pResult->materials, pResult->header, file)) return MMD_PMX_FILE_INVALID_MATERIALS;
 
     return MMD_NO_ERROR;
 }
@@ -145,6 +147,21 @@ int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_head
     for (int i = 0; i < pResult->length; i++)
     {
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i]);
+    }
+
+    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
+}
+
+int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
+{
+    mmd_file_read_4bytes(file, &pResult->length);
+    pResult->data = mmd_memory_allocate_array(mmd_pmx_file_material, pResult->length);
+
+    for (int i = 0; i < 1; i++)
+    {
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].name);
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].english_name);
+        mmd_file_read_16bytes(file, &pResult->data[i].diffuse);
     }
 
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
