@@ -14,6 +14,8 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
     if (!mmd_pmx_file_read_vertices(pResult->vertices, pResult->header, file)) return MMD_PMX_FILE_INVAILD_VERTICES;
     pResult->faces = mmd_memory_allocate_struct(mmd_pmx_file_faces);
     if (!mmd_pmx_file_read_faces(pResult->faces, pResult->header, file)) return MMD_PMX_FILE_INVAILD_FACES;
+    pResult->textures = mmd_memory_allocate_struct(mmd_pmx_file_textures);
+    if (!mmd_pmx_file_read_textures(pResult->textures, pResult->header, file)) return MMD_PMX_FILE_INVAILD_TEXTURES;
 
     return MMD_NO_ERROR;
 }
@@ -120,5 +122,22 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
 
 int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
-    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW; 
+    mmd_file_read_4bytes(file, &pResult->length);
+    if (pResult->length % 3 != 0) return MMD_PMX_FILE_INVAILD_FACES;
+    pResult->data = mmd_memory_allocate_array(mmd_pmx_file_face, pResult->length / 3);
+
+    for (int i = 0; i < pResult->length / 3; i++)
+    {
+        pResult->data[i] = *mmd_memory_allocate_struct(mmd_pmx_file_face);
+        mmd_file_read_nbytes(file, header->vertex_index_size, &pResult->data[i].face_index1);
+        mmd_file_read_nbytes(file, header->vertex_index_size, &pResult->data[i].face_index2);
+        mmd_file_read_nbytes(file, header->vertex_index_size, &pResult->data[i].face_index3);
+    }
+
+    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
+}
+
+int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
+{
+    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }
