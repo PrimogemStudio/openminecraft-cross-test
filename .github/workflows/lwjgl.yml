@@ -22,11 +22,53 @@ jobs:
         run: |
           git clone https://github.com/LWJGL/lwjgl3
           cd lwjgl3
+          
+          export LIBFFI_VERSION=3.4.4
+          export LWJGL_BUILD_OFFLINE=1
+          export LWJGL_BUILD_ARCH=arm64
+
+          export LWJGL_NATIVE=bin/libs/native/macos/$LWJGL_BUILD_ARCH/org/lwjgl
+          mkdir -p $LWJGL_NATIVE
+
+          wget https://github.com/libffi/libffi/releases/download/v$LIBFFI_VERSION/libffi-$LIBFFI_VERSION.tar.gz
+          tar xvf libffi-$LIBFFI_VERSION.tar.gz
+          mv libffi-$LIBFFI_VERSION libffi
+          cd libffi
+
+          # Patch generator to produce iOS arm64 only
+          sed -i'.bak' -e '/\(64_platform\)/! s/build_target(ios_/#build_target(ios_/g' generate-darwin-source-and-headers.py
+
+          # Generate configure file
+          python3 generate-darwin-source-and-headers.py --only-ios
+
+          # Restore generator
+          mv generate-darwin-source-and-headers.py.bak generate-darwin-source-and-headers.py
+
+          # Build libffi
+          xcodebuild -arch arm64 -sdk iphoneos -target libffi-iOS || echo "Exit code: $?"
+
+          # Copy libffi
+          cd ..
+          cp libffi/build/Release-iphoneos/libffi.a $LWJGL_NATIVE/
+
+          wget -nc "https://nightly.link/PojavLauncherTeam/shaderc/workflows/ios/main/libshaderc.zip"
+          unzip -o libshaderc.zip -d $LWJGL_NATIVE/shaderc
+          rm $LWJGL_NATIVE/shaderc/libshaderc_shared.1.dylib
+          mv $LWJGL_NATIVE/shaderc/libshaderc_shared.dylib $LWJGL_NATIVE/shaderc/libshaderc.dylib
+
+          # HACK: Skip compiling and running the generator to save time and keep LWJGLX functions
+          mkdir -p bin/classes/{generator,templates/META-INF}
+          touch bin/classes/{generator,templates}/touch.txt bin/classes/generator/generated-touch.txt
+
           yes | ant -Dplatform.macos=true compile-templates
           yes | ant -Dplatform.macos=true compile-native
+
+          rm -rf bin/out; mkdir bin/out
+          find $LWJGL_NATIVE -name 'liblwjgl*.dylib' -exec cp {} bin/out/ \;
+          cp $LWJGL_NATIVE/shaderc/libshaderc.dylib bin/out/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: lwjgl3/bin/libs/native/
+          path: lwjgl3/bin/out/
