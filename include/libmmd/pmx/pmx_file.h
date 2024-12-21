@@ -108,12 +108,60 @@ typedef struct {
     char** data;
 } mmd_pmx_file_textures;
 
+typedef enum : uint8_t {
+    BothFace = 0x01, 
+    GroundShadow = 0x02, 
+    CastSelfShadow = 0x04, 
+    ReceiveSelfShadow = 0x08, 
+    DrawEdge = 0x10, 
+    VertexColor = 0x20, 
+    DrawPoint = 0x40, 
+    DrawLine = 0x80
+} mmd_pmx_file_material_drawmode_flags;
+
+typedef enum : uint8_t {
+    None = 0x00, 
+    Mul = 0x01, 
+    Add = 0x02, 
+    SubTexture = 0x03
+} mmd_pmx_file_material_sphere_mode;
+
+typedef enum : uint8_t {
+    Separate = 0x00, 
+    Common = 0x01
+} mmd_pmx_file_material_toon_mode;
+
+typedef struct {
+    char* name;
+    char* english_name;
+    glm::vec4 diffuse;
+    glm::vec3 specular;
+    float specular_power;
+    glm::vec3 ambient;
+    mmd_pmx_file_material_drawmode_flags draw_mode;
+    glm::vec4 edge_color;
+    float edge_size;
+    uint32_t texture_index;
+    uint32_t sphere_texture_index;
+    mmd_pmx_file_material_sphere_mode sphere_mode;
+    mmd_pmx_file_material_toon_mode toon_mode;
+    uint32_t toon_texture_index;
+    char* meno;
+    int affected_faces;
+} mmd_pmx_file_material;
+
+typedef struct {
+    uint32_t length;
+    mmd_pmx_file_material* data;
+} mmd_pmx_file_materials;
+
 typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
     mmd_pmx_file_vertices* vertices;
     mmd_pmx_file_faces* faces;
     mmd_pmx_file_textures* textures;
+    mmd_pmx_file_materials* materials;
 } mmd_pmx_file;
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);
@@ -122,6 +170,7 @@ int mmd_pmx_file_read_info(mmd_pmx_file_info* pResult, mmd_pmx_file_header* head
 int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
+int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 
 }
 

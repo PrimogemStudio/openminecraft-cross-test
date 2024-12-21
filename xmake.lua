@@ -3,7 +3,7 @@ add_requires("glm")
 add_rules("mode.debug")
 add_rules("mode.release")
 
-function files_conf()
+function libmmd_source()
     add_packages("bullet3")
     add_packages("glm")
     -- add_files("src/**.c")
@@ -14,8 +14,8 @@ end
 
 target("mmd")
 set_kind("shared")
-files_conf()
+libmmd_source()
 
 target("test")
 set_kind("binary")
-files_conf()
+libmmd_source()

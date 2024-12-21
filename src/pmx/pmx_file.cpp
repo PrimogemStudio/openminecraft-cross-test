@@ -7,15 +7,15 @@
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
 {
     pResult->header = mmd_memory_allocate_struct(mmd_pmx_file_header);
-    if (!mmd_pmx_file_read_header(pResult->header, file)) return MMD_PMX_FILE_INVAILD_HEADER;
+    if (!mmd_pmx_file_read_header(pResult->header, file)) return MMD_PMX_FILE_INVALID_HEADER;
     pResult->info = mmd_memory_allocate_struct(mmd_pmx_file_info);
-    if (!mmd_pmx_file_read_info(pResult->info, pResult->header, file)) return MMD_PMX_FILE_INVAILD_INFO;
+    if (!mmd_pmx_file_read_info(pResult->info, pResult->header, file)) return MMD_PMX_FILE_INVALID_INFO;
     pResult->vertices = mmd_memory_allocate_struct(mmd_pmx_file_vertices);
-    if (!mmd_pmx_file_read_vertices(pResult->vertices, pResult->header, file)) return MMD_PMX_FILE_INVAILD_VERTICES;
+    if (!mmd_pmx_file_read_vertices(pResult->vertices, pResult->header, file)) return MMD_PMX_FILE_INVALID_VERTICES;
     pResult->faces = mmd_memory_allocate_struct(mmd_pmx_file_faces);
-    if (!mmd_pmx_file_read_faces(pResult->faces, pResult->header, file)) return MMD_PMX_FILE_INVAILD_FACES;
+    if (!mmd_pmx_file_read_faces(pResult->faces, pResult->header, file)) return MMD_PMX_FILE_INVALID_FACES;
     pResult->textures = mmd_memory_allocate_struct(mmd_pmx_file_textures);
-    if (!mmd_pmx_file_read_textures(pResult->textures, pResult->header, file)) return MMD_PMX_FILE_INVAILD_TEXTURES;
+    if (!mmd_pmx_file_read_textures(pResult->textures, pResult->header, file)) return MMD_PMX_FILE_INVALID_TEXTURES;
 
     return MMD_NO_ERROR;
 }
@@ -25,7 +25,7 @@ int mmd_pmx_file_read_header(mmd_pmx_file_header* pResult, mmd_file_base* file)
     uint32_t pmx_header;
     mmd_file_read_4bytes(file, &pmx_header);
 
-    if (pmx_header != *((uint32_t*) ((const char*) "PMX "))) return MMD_PMX_FILE_INVAILD_HEADER;
+    if (pmx_header != *((uint32_t*) ((const char*) "PMX "))) return MMD_PMX_FILE_INVALID_HEADER;
     
     mmd_file_read_4bytes(file, &pResult->version);
     mmd_file_read_1byte(file, &pResult->data_size);
@@ -110,7 +110,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
         }
         else
         {
-            return MMD_PMX_FILE_VERTEX_INVAILD_BONETYPE;
+            return MMD_PMX_FILE_VERTEX_INVALID_BONETYPE;
         }
 
         mmd_file_read_4bytes(file, &vtx->edge_margin); 
@@ -123,7 +123,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
 int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
     mmd_file_read_4bytes(file, &pResult->length);
-    if (pResult->length % 3 != 0) return MMD_PMX_FILE_INVAILD_FACES;
+    if (pResult->length % 3 != 0) return MMD_PMX_FILE_INVALID_FACES;
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_face, pResult->length / 3);
 
     for (int i = 0; i < pResult->length / 3; i++)
