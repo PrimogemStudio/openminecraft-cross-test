@@ -217,6 +217,20 @@ typedef struct {
     mmd_pmx_file_bone* data;
 } mmd_pmx_file_bones;
 
+typedef enum : uint8_t {
+    Group = 0x00, 
+    Position = 0x01, 
+    Bone = 0x02, 
+    UV = 0x03, 
+    AddUV1 = 0x04, 
+    AddUV2 = 0x05, 
+    AddUV3 = 0x06, 
+    AddUV4 = 0x07, 
+    Material = 0x08, 
+    Flip = 0x09, 
+    Impulse = 0x0a
+} mmd_pmx_file_morph_type;
+
 typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
