@@ -195,5 +195,25 @@ int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_he
 
 int mmd_pmx_file_read_bones(mmd_pmx_file_bones* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
 {
+    mmd_file_read(file, uint32_t, &pResult->length);
+    pResult->data = mmd_memory_allocate_array(mmd_pmx_file_bone, pResult->length);
+
+    for (int i = 0; i < 1; i++)
+    {
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].name);
+        mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].english_name);
+        mmd_file_read(file, glm::vec3, &pResult->data[i].position);
+        mmd_file_read_nbytes(file, header->bone_index_size, &pResult->data[i].parent_bone);
+        mmd_file_read(file, int, &pResult->data[i].deform_depth);
+        mmd_file_read(file, mmd_pmx_file_bone_flag, &pResult->data[i].bone_flag);
+
+        uint16_t bone_flag = pResult->data[i].bone_flag;
+
+        if (!(bone_flag & TargetShowMode))
+        {
+            mmd_file_read(file, glm::vec3, pResult->data[i].position_offset);
+        }
+    }
+
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }
