@@ -18,6 +18,8 @@ int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file)
     if (!mmd_pmx_file_read_textures(pResult->textures, pResult->header, file)) return MMD_PMX_FILE_INVALID_TEXTURES;
     pResult->materials = mmd_memory_allocate_struct(mmd_pmx_file_materials);
     if (!mmd_pmx_file_read_materials(pResult->materials, pResult->header, file)) return MMD_PMX_FILE_INVALID_MATERIALS;
+    pResult->bones = mmd_memory_allocate_struct(mmd_pmx_file_bones);
+    if (!mmd_pmx_file_read_bones(pResult->bones, pResult->header, file)) return MMD_PMX_FILE_INVALID_BONES; 
 
     return MMD_NO_ERROR;
 }
@@ -172,10 +174,26 @@ int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_he
         mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].sphere_texture_index);
         mmd_file_read(file, mmd_pmx_file_material_sphere_mode, &pResult->data[i].sphere_mode);
         mmd_file_read(file, mmd_pmx_file_material_toon_mode, &pResult->data[i].toon_mode);
-        mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].toon_texture_index);
+
+        if (pResult->data[i].toon_mode == Separate)
+        {
+            mmd_file_read_nbytes(file, header->texture_index_size, &pResult->data[i].toon_texture_index);
+        }
+        else
+        {
+            mmd_file_read(file, uint8_t, &pResult->data[i].toon_texture_index);
+        }
+
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].meno);
         mmd_file_read(file, int, &pResult->data[i].affected_faces);
+
+        if (mmd_file_check(file)) return MMD_FILE_BUFFER_OVERFLOW;
     }
 
+    return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
+}
+
+int mmd_pmx_file_read_bones(mmd_pmx_file_bones* pResult, mmd_pmx_file_header* header, mmd_file_base* file)
+{
     return mmd_file_check(file) ? MMD_NO_ERROR : MMD_FILE_BUFFER_OVERFLOW;
 }

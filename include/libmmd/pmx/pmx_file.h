@@ -172,14 +172,49 @@ typedef enum : uint16_t {
 } mmd_pmx_file_bone_flag;
 
 typedef struct {
+    uint32_t bone_index;
+    bool enable_limit;
+    glm::vec3 limit_min;
+    glm::vec3 limit_max;
+} mmd_pmx_file_bone_ik;
+
+typedef struct {
+    uint32_t ik_target_bone_index;
+    int ik_iteration_count;
+    float ik_limit;
+
+    uint32_t link_count;
+    mmd_pmx_file_bone_ik* links;
+} mmd_pmx_file_bone_iks;
+
+typedef struct {
     char* name;
     char* english_name;
     glm::vec3 position;
     uint32_t parent_bone;
     int deform_depth;
     uint16_t bone_flag;
-    
+    // non TargetShowMode
+    glm::vec3* position_offset;
+    // TargetShowMode
+    uint32_t* link_bone_index;
+    // AppendRotate && AppendTranslate
+    uint32_t* append_bone_index;
+    // FixedAxis
+    glm::vec3* fixed_axis;
+    // LocalAxis
+    glm::vec3* local_x_axis;
+    glm::vec3* local_z_axis;
+    // DeformOuterParent
+    int* key_value;
+    // IK
+    mmd_pmx_file_bone_iks* bone_iks;
 } mmd_pmx_file_bone;
+
+typedef struct {
+    uint32_t length;
+    mmd_pmx_file_bone* data;
+} mmd_pmx_file_bones;
 
 typedef struct {
     mmd_pmx_file_header* header;
@@ -188,6 +223,7 @@ typedef struct {
     mmd_pmx_file_faces* faces;
     mmd_pmx_file_textures* textures;
     mmd_pmx_file_materials* materials;
+    mmd_pmx_file_bones* bones;
 } mmd_pmx_file;
 
 int mmd_pmx_file_create(mmd_pmx_file* pResult, mmd_file_base* file);
@@ -197,6 +233,7 @@ int mmd_pmx_file_read_vertices(mmd_pmx_file_vertices* pResult, mmd_pmx_file_head
 int mmd_pmx_file_read_faces(mmd_pmx_file_faces* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 int mmd_pmx_file_read_textures(mmd_pmx_file_textures* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 int mmd_pmx_file_read_materials(mmd_pmx_file_materials* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
+int mmd_pmx_file_read_bones(mmd_pmx_file_bones* pResult, mmd_pmx_file_header* header, mmd_file_base* file);
 
 }
 
