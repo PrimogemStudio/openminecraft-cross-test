@@ -232,6 +232,16 @@ typedef enum : uint8_t {
 } mmd_pmx_file_morph_type;
 
 typedef struct {
+    uint32_t vertex_index;
+    glm::vec3 position;
+} mmd_pmx_file_morph_position;
+
+typedef struct {
+    uint32_t vertex_index;
+    glm::vec4 uv;
+} mmd_pmx_file_morph_uv;
+
+typedef struct {
     mmd_pmx_file_header* header;
     mmd_pmx_file_info* info;
     mmd_pmx_file_vertices* vertices;
