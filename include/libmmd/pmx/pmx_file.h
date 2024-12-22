@@ -176,7 +176,7 @@ typedef struct {
     bool enable_limit;
     glm::vec3 limit_min;
     glm::vec3 limit_max;
-} mmd_pmx_file_bone_ik;
+} mmd_pmx_file_bone_ik_links;
 
 typedef struct {
     uint32_t ik_target_bone_index;
@@ -184,7 +184,7 @@ typedef struct {
     float ik_limit;
 
     uint32_t link_count;
-    mmd_pmx_file_bone_ik* links;
+    mmd_pmx_file_bone_ik_links* links;
 } mmd_pmx_file_bone_iks;
 
 typedef struct {
@@ -195,18 +195,19 @@ typedef struct {
     int deform_depth;
     uint16_t bone_flag;
     // non TargetShowMode
-    glm::vec3* position_offset;
+    glm::vec3 position_offset;
     // TargetShowMode
-    uint32_t* link_bone_index;
+    uint32_t link_bone_index;
     // AppendRotate && AppendTranslate
-    uint32_t* append_bone_index;
+    uint32_t append_bone_index;
+    float append_weight;
     // FixedAxis
-    glm::vec3* fixed_axis;
+    glm::vec3 fixed_axis;
     // LocalAxis
-    glm::vec3* local_x_axis;
-    glm::vec3* local_z_axis;
+    glm::vec3 local_x_axis;
+    glm::vec3 local_z_axis;
     // DeformOuterParent
-    int* key_value;
+    int key_value;
     // IK
     mmd_pmx_file_bone_iks* bone_iks;
 } mmd_pmx_file_bone;

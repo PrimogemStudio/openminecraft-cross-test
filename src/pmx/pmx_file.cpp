@@ -197,8 +197,7 @@ int mmd_pmx_file_read_bones(mmd_pmx_file_bones* pResult, mmd_pmx_file_header* he
 {
     mmd_file_read(file, uint32_t, &pResult->length);
     pResult->data = mmd_memory_allocate_array(mmd_pmx_file_bone, pResult->length);
-
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < pResult->length; i++)
     {
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].name);
         mmd_file_read_lengthed_string(file, !header->encode, &pResult->data[i].english_name);
@@ -211,7 +210,57 @@ int mmd_pmx_file_read_bones(mmd_pmx_file_bones* pResult, mmd_pmx_file_header* he
 
         if (!(bone_flag & TargetShowMode))
         {
-            mmd_file_read(file, glm::vec3, pResult->data[i].position_offset);
+            mmd_file_read(file, glm::vec3, &pResult->data[i].position_offset);
+        }
+        else
+        {
+            mmd_file_read_nbytes(file, header->bone_index_size, &pResult->data[i].link_bone_index);
+        }
+
+        if ((bone_flag & AppendRotate) || (bone_flag & AppendTranslate))
+        {
+            mmd_file_read_nbytes(file, header->bone_index_size, &pResult->data[i].append_bone_index);
+            mmd_file_read(file, float, &pResult->data[i].append_weight);
+        }
+
+        if (bone_flag & FixedAxis)
+        {
+            mmd_file_read(file, glm::vec3, &pResult->data[i].fixed_axis);
+        }
+
+        if (bone_flag & LocalAxis)
+        {
+            mmd_file_read(file, glm::vec3, &pResult->data[i].local_x_axis);
+            mmd_file_read(file, glm::vec3, &pResult->data[i].local_z_axis);
+        }
+
+        if (bone_flag & DeformOuterParent)
+        {
+            mmd_file_read(file, int, &pResult->data[i].key_value);
+        }
+
+        if (bone_flag & IK)
+        {
+            pResult->data[i].bone_iks = mmd_memory_allocate_struct(mmd_pmx_file_bone_iks);
+
+            mmd_file_read_nbytes(file, header->bone_index_size, &pResult->data[i].bone_iks->ik_target_bone_index);
+            mmd_file_read(file, int, &pResult->data[i].bone_iks->ik_iteration_count);
+            mmd_file_read(file, float, &pResult->data[i].bone_iks->ik_limit);
+            mmd_file_read(file, uint32_t, &pResult->data[i].bone_iks->link_count);
+            pResult->data[i].bone_iks->links = mmd_memory_allocate_array(mmd_pmx_file_bone_ik_links, pResult->data[i].bone_iks->link_count);
+
+            for (int j = 0; j < pResult->data[i].bone_iks->link_count; j++)
+            {
+                mmd_pmx_file_bone_ik_links* link = &pResult->data[i].bone_iks->links[j];
+                mmd_file_read_nbytes(file, header->bone_index_size, &link->bone_index);
+                mmd_file_read(file, bool, &link->enable_limit);
+                
+                if (link->enable_limit)
+                {
+                    mmd_file_read(file, glm::vec3, &link->limit_min);
+                    mmd_file_read(file, glm::vec3, &link->limit_max);
+                }
+            }
         }
     }
 
