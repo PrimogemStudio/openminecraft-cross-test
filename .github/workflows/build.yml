@@ -199,6 +199,16 @@ jobs:
           sudo apt install gcc-multilib g++-multilib
           sudo apt install gcc-${{ matrix.triplet }} g++-${{ matrix.triplet }}
           sudo apt install libc6-dev-${{ matrix.libc_arch }}-cross
+
+          sudo sed -i 's/deb mirror/deb [arch=amd64,i386] mirror/' /etc/apt/sources.list
+          sudo grep "mirror+file" /etc/apt/sources.list | sudo tee /etc/apt/sources.list.d/ports.list
+          sudo sed -i 's/amd64,i386/${{ matrix.libc_arch }}/' /etc/apt/sources.list.d/ports.list
+          sudo sed -i 's#mirror+file:/etc/apt/apt-mirrors.txt#http://ports.ubuntu.com/ubuntu-ports/#' /etc/apt/sources.list.d/ports.list
+          sudo dpkg --add-architecture ${{ matrix.libc_arch }}
+          sudo apt-get update || true
+
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install libgtk-3-dev:${{ matrix.libc_arch }} libatk-bridge2.0-dev:${{ matrix.libc_arch }} libgdk-pixbuf2.0-dev:${{ matrix.libc_arch }} libglu-dev:${{ matrix.libc_arch }} libgl1-mesa-glx:${{ matrix.libc_arch }} libx11-dev:${{ matrix.libc_arch }} libxt-dev:${{ matrix.libc_arch }} libdbus-1-dev:${{ matrix.libc_arch }} -o Dpkg::Options::="--force-overwrite"
+
           xmake f -a ${{ matrix.arch }} --sdk=/usr --cross=${{ matrix.triplet }}- -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }} --cxxflags="-Wno-undef" --ldflags="-Wno-undef"
 
       - name: Configure Linux LoongArch
