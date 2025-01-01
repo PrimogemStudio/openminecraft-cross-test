@@ -137,11 +137,6 @@ jobs:
             plat: watchos
             arch: armv7k
 
-          - os: macos-latest
-            name: TvOS
-            plat: tvos
-            arch: arm64
-
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -180,10 +175,6 @@ jobs:
       - name: Configure WatchOS
         if: matrix.plat == 'watchos'
         run: xmake f -p watchos -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-
-      - name: Configure TvOS
-        if: matrix.plat == 'tvos'
-        run: xmake f -p tvos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           
       - name: Configure OpenHarmony
         if: matrix.plat == 'harmony'
