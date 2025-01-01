@@ -6,6 +6,9 @@ function libmmd_source()
     add_packages("bullet3", "glm")
     add_files("src/**.cpp")
     add_includedirs("include")
+    if is_plat("linux") then
+        add_links("GL")
+    end
 end
 
 target("mmd")
