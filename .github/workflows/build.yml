@@ -151,6 +151,10 @@ jobs:
         with:
           xmake-version: branch@master
 
+      - name: Update xmake repo
+        if: matrix.plat != 'freebsd'
+        run: xmake repo -u
+
       - name: Setup OpenHarmony SDK
         if: matrix.plat == 'harmony'
         run: |
@@ -234,6 +238,7 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
+            xmake repo -u
             xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
@@ -262,6 +267,7 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
+            xmake repo -u
             xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
