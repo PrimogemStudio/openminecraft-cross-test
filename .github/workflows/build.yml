@@ -239,10 +239,9 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+            xmake f -p freebsd -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-            mv build/bsd build/freebsd
             mv build/freebsd/x86_64 build/freebsd/x64
 
       - name: Build FreeBSD (arm64)
@@ -267,10 +266,8 @@ jobs:
             source ~/.xmake/profile
             cd ..
 
-            xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+            xmake f -p freebsd -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
-
-            mv build/bsd build/freebsd
 
       - name: Fix MacOS Target Path (Stage 1)
         if: ${{ matrix.plat == 'macos' }}
