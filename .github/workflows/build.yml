@@ -106,6 +106,7 @@ jobs:
             name: Linux (loongarch64)
             plat: linux
             arch: loong64
+            libc_arch: loongarch64
 
           - os: ubuntu-latest
             name: FreeBSD (x64)
