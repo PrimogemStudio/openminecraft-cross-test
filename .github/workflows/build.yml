@@ -135,11 +135,6 @@ jobs:
           - os: macos-latest
             name: WatchOS
             plat: watchos
-            arch: i386
-
-          - os: macos-latest
-            name: WatchOS
-            plat: watchos
             arch: armv7k
 
     name: Build ${{ matrix.name }}
