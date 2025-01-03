@@ -133,11 +133,6 @@ jobs:
             plat: iphoneos
             arch: arm64
 
-          - os: macos-latest
-            name: WatchOS
-            plat: watchos
-            arch: armv7k
-
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -176,10 +171,6 @@ jobs:
       - name: Configure IOS
         if: matrix.plat == 'iphoneos'
         run: xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-
-      - name: Configure WatchOS
-        if: matrix.plat == 'watchos'
-        run: xmake f -p watchos -a ${{ matrix.arch }} -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
           
       - name: Configure OpenHarmony
         if: matrix.plat == 'harmony'
