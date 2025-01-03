@@ -1,9 +1,9 @@
-add_requires("bullet3", "glm")
+add_requires("libffi", "bullet3", "glm")
 add_rules("mode.debug")
 add_rules("mode.release")
 
 function libmmd_source()
-    add_packages("bullet3", "glm")
+    add_packages("libffi", "bullet3", "glm")
     add_files("src/**.cpp")
     add_includedirs("include")
 end
