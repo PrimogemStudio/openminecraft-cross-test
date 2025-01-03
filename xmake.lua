@@ -1,4 +1,5 @@
-add_requires("libffi", "bullet3", "glm")
+add_requires("libffi", { shared = false })
+add_requires("bullet3", "glm")
 add_rules("mode.debug")
 add_rules("mode.release")
 
