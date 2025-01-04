@@ -157,18 +157,18 @@ typedef struct {
 
 typedef enum : uint16_t {
     TargetShowMode = 0x0001,
-	AllowRotate = 0x0002,
-	AllowTranslate = 0x0004,
-	Visible = 0x0008,
-	AllowControl = 0x0010,
-	IK = 0x0020,
-	AppendLocal = 0x0080,
-	AppendRotate = 0x0100,
-	AppendTranslate = 0x0200,
-	FixedAxis = 0x0400,
-	LocalAxis = 0x0800,
-	DeformAfterPhysics = 0x1000,
-	DeformOuterParent = 0x2000
+    AllowRotate = 0x0002,
+    AllowTranslate = 0x0004,
+    Visible = 0x0008,
+    AllowControl = 0x0010,
+    IK = 0x0020,
+    AppendLocal = 0x0080,
+    AppendRotate = 0x0100,
+    AppendTranslate = 0x0200,
+    FixedAxis = 0x0400,
+    LocalAxis = 0x0800,
+    DeformAfterPhysics = 0x1000,
+    DeformOuterParent = 0x2000
 } mmd_pmx_file_bone_flag;
 
 typedef struct {
