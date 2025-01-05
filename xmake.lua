@@ -1,6 +1,5 @@
 set_languages("c++17")
 
-includes("extlibs/harfbuzz.lua")
 includes("extlibs/freetype.lua")
 add_requires("bullet3", "glm")
 add_rules("mode.debug")
