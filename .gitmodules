@@ -1,0 +1,6 @@
+[submodule "extlibs/harfbuzz"]
+	path = extlibs/harfbuzz
+	url = https://github.com/harfbuzz/harfbuzz
+[submodule "extlibs/freetype"]
+	path = extlibs/freetype
+	url = https://github.com/freetype/FreeType

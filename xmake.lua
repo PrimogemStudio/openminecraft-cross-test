@@ -1,3 +1,5 @@
+includes("extlibs/harfbuzz.lua")
+includes("extlibs/freetype.lua")
 add_requires("bullet3", "glm")
 add_rules("mode.debug")
 add_rules("mode.release")
