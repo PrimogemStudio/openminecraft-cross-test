@@ -13,7 +13,7 @@ function libfreetype_source()
     add_includedirs("freetype/include/freetype/config")
 
     if is_plat("macosx", "ios", "tvos", "visionos") then
-        set_toolset("cxx", "clang++")
+        set_config("cxx", "clang++")
     end
 end
 
