@@ -165,13 +165,13 @@ jobs:
           wget https://dl.google.com/android/repository/android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
           unzip android-ndk-${{ env.ANDROID_NDK_VERSION }}-linux.zip
 
-      - name: Build MacOS
+      - name: Configure MacOS
         if: matrix.plat == 'macos'
-        run: xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+        run: xmake f -m ${{ env.MODE }} --cxx="clang++" -yc ${{ env.XMAKE_ARGS }}
 
       - name: Configure IOS
         if: matrix.plat == 'iphoneos'
-        run: xmake f -p iphoneos -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
+        run: xmake f -p iphoneos -m ${{ env.MODE }} --cxx="clang++" -yc ${{ env.XMAKE_ARGS }}
           
       - name: Configure OpenHarmony
         if: matrix.plat == 'harmony'
