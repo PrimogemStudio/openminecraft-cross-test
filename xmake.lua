@@ -1,5 +1,6 @@
 if is_plat("macosx", "ios", "tvos", "visionos") then
     set_config("cxx", "clang++")
+    set_languages("c++17")
 end
 
 includes("extlibs/harfbuzz.lua")
