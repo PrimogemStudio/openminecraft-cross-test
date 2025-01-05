@@ -1,3 +1,7 @@
+if is_plat("macosx", "ios", "tvos", "visionos") then
+    set_config("cxx", "clang++")
+end
+
 includes("extlibs/harfbuzz.lua")
 includes("extlibs/freetype.lua")
 add_requires("bullet3", "glm")

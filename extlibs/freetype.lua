@@ -11,10 +11,6 @@ function libfreetype_source()
     add_defines("FT2_BUILD_LIBRARY=")
     add_includedirs("freetype/include")
     add_includedirs("freetype/include/freetype/config")
-
-    if is_plat("macosx", "ios", "tvos", "visionos") then
-        set_config("cxx", "clang++")
-    end
 end
 
 target("freetype")
