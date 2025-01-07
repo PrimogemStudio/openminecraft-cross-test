@@ -304,6 +304,7 @@ jobs:
       - name: Construct output
         run: |
           mkdir -p target/${{ matrix.plat }}/${{ matrix.loaderarch }}
+          ls prod
           cp prod/bin/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
