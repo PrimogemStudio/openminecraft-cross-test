@@ -132,13 +132,6 @@ jobs:
             containerarch: x86-64
             loaderarch: x64
 
-          - os: ubuntu-latest
-            name: FreeBSD (arm64)
-            plat: freebsd
-            arch: arm64
-            containerarch: arm64
-            loaderarch: arm64
-
           - os: macos-latest
             name: MacOS (arm64)
             plat: macos
