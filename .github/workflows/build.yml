@@ -296,7 +296,7 @@ jobs:
           shell: bash
           environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
           run: |
-            sudo pkg install -y git cmake ninja gtk3 dbus
+            sudo pkg_add -y git cmake ninja gtk3 dbus
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
