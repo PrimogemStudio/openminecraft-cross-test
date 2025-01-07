@@ -33,31 +33,31 @@ jobs:
             loaderarch: arm64
 
           - os: ubuntu-latest
-            name: OpenHarmony (arm64-v8a)
+            name: OpenHarmony (arm64)
             plat: harmony
             arch: arm64-v8a
             loaderarch: arm64
 
           - os: ubuntu-latest
-            name: OpenHarmony (armeabi-v7a)
+            name: OpenHarmony (arm32)
             plat: harmony
             arch: armeabi-v7a
             loaderarch: arm32
 
           - os: ubuntu-latest
-            name: OpenHarmony (x86_64)
+            name: OpenHarmony (x64)
             plat: harmony
             arch: x86_64
             loaderarch: x64
 
           - os: ubuntu-latest
-            name: Android (arm64-v8a)
+            name: Android (arm64)
             plat: android
             arch: arm64-v8a
             loaderarch: arm64
 
           - os: ubuntu-latest
-            name: Android (armeabi-v7a)
+            name: Android (arm32)
             plat: android
             arch: armeabi-v7a
             loaderarch: arm32
@@ -69,7 +69,7 @@ jobs:
             loaderarch: x86
 
           - os: ubuntu-latest
-            name: Android (x86_64)
+            name: Android (x64)
             plat: android
             arch: x86_64
             loaderarch: x64
@@ -329,8 +329,9 @@ jobs:
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: target
           path: target/
+          overwrite: true
  
