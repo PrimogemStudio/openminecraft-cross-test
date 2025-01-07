@@ -291,7 +291,7 @@ jobs:
         with:
           operating_system: ${{ matrix.plat }}
           architecture: ${{ matrix.containerarch }}
-          version: '7.6'
+          version: '7.5'
           memory: 8G
           shell: bash
           environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
