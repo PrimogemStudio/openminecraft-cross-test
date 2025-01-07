@@ -307,7 +307,7 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             merge-multiple: true
-            pattern: *
+            pattern: "target-*"
             path: libs/
 
         - name: Upload Artifacts
