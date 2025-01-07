@@ -129,12 +129,14 @@ jobs:
             name: FreeBSD (x64)
             plat: freebsd
             arch: x64
+            containerarch: x86-64
             loaderarch: x64
 
           - os: ubuntu-latest
             name: FreeBSD (arm64)
             plat: freebsd
             arch: arm64
+            containerarch: arm64
             loaderarch: arm64
 
           - os: macos-latest
@@ -241,40 +243,12 @@ jobs:
         if: matrix.plat != 'freebsd'
         run: xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-      - name: Build FreeBSD (x86_64)
-        if: matrix.plat == 'freebsd' && matrix.arch == 'x64'
+      - name: Build FreeBSD
+        if: matrix.plat == 'freebsd'
         uses: cross-platform-actions/action@v0.25.0
         with:
-          operating_system: freebsd
-          architecture: x86-64
-          version: '13.3'
-          memory: 8G
-          shell: bash
-          environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
-          run: |
-            sudo pkg install -y git cmake ninja gmake gtk3 dbus
-            git clone --recursive https://github.com/xmake-io/xmake.git
-            cd ./xmake
-
-            /usr/bin/make --version
-            ./configure --make=/usr/bin/make
-            gmake
-            ./scripts/get.sh __local__ __install_only__
-            source ~/.xmake/profile
-            cd ..
-
-            xmake repo -u
-            xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
-            xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
-
-            xmake install -o prod
-
-      - name: Build FreeBSD (arm64)
-        if: matrix.plat == 'freebsd' && matrix.arch == 'arm64'
-        uses: cross-platform-actions/action@v0.25.0
-        with:
-          operating_system: freebsd
-          architecture: arm64
+          operating_system: ${{ matrix.plat }}
+          architecture: ${{ matrix.containerarch }}
           version: '13.3'
           memory: 8G
           shell: bash
@@ -298,7 +272,7 @@ jobs:
             xmake install -o prod
 
       - name: Xmake install
-        if: ${{ matrix.plat != 'freebsd' }}
+        if: matrix.plat != 'freebsd'
         run: xmake install -o prod
 
       - name: Construct output
@@ -308,7 +282,7 @@ jobs:
           cp prod/bin/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: Construct output (UNIX)
-        if: ${{ matrix.plat != 'windows' }}
+        if: matrix.plat != 'windows'
         run: |
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
