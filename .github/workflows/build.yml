@@ -132,6 +132,13 @@ jobs:
             containerarch: x86-64
             loaderarch: x64
 
+          - os: ubuntu-latest
+            name: FreeBSD (arm64)
+            plat: freebsd
+            arch: arm64
+            containerarch: arm64
+            loaderarch: arm64
+
           - os: macos-latest
             name: MacOS (arm64)
             plat: macos
@@ -145,8 +152,8 @@ jobs:
             loaderarch: x64
 
           - os: macos-latest
-            name: IphoneOS
-            plat: iphoneos
+            name: IOS
+            plat: ios
             arch: arm64
             loaderarch: arm64
 
@@ -187,7 +194,7 @@ jobs:
         run: xmake f -m ${{ env.MODE }} --cxx="clang++" -yc ${{ env.XMAKE_ARGS }}
 
       - name: Configure IOS
-        if: matrix.plat == 'iphoneos'
+        if: matrix.plat == 'ios'
         run: xmake f -p iphoneos -m ${{ env.MODE }} --cxx="clang++" -yc ${{ env.XMAKE_ARGS }}
           
       - name: Configure OpenHarmony
