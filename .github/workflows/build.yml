@@ -296,13 +296,13 @@ jobs:
           shell: bash
           environment_variables: LINK_JOBS JOBS MODE XMAKE_ARGS
           run: |
-            sudo pkg_add git cmake ninja gtk3 dbus
+            sudo pkg_add git cmake ninja gtk3 dbus gmake
             git clone --recursive https://github.com/xmake-io/xmake.git
             cd ./xmake
 
             /usr/bin/make --version
-            ./configure --make=/usr/bin/make
-            make
+            ./configure --make=/usr/bin/gmake
+            gmake
             ./scripts/get.sh __local__ __install_only__
             source ~/.xmake/profile
             cd ..
