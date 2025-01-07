@@ -18,61 +18,73 @@ jobs:
             name: Windows (x64)
             plat: windows
             arch: x64
+            loaderarch: x64
 
           - os: windows-latest
             name: Windows (x86)
             plat: windows
             arch: x86
+            loaderarch: x86
 
           - os: windows-latest
             name: Windows (arm64)
             plat: windows
             arch: arm64
+            loaderarch: arm64
 
           - os: ubuntu-latest
             name: OpenHarmony (arm64-v8a)
             plat: harmony
             arch: arm64-v8a
+            loaderarch: arm64
 
           - os: ubuntu-latest
             name: OpenHarmony (armeabi-v7a)
             plat: harmony
             arch: armeabi-v7a
+            loaderarch: arm32
 
           - os: ubuntu-latest
             name: OpenHarmony (x86_64)
             plat: harmony
             arch: x86_64
+            loaderarch: x64
 
           - os: ubuntu-latest
             name: Android (arm64-v8a)
             plat: android
             arch: arm64-v8a
+            loaderarch: arm64
 
           - os: ubuntu-latest
             name: Android (armeabi-v7a)
             plat: android
             arch: armeabi-v7a
+            loaderarch: arm32
 
           - os: ubuntu-latest
             name: Android (x86)
             plat: android
             arch: x86
+            loaderarch: x86
 
           - os: ubuntu-latest
             name: Android (x86_64)
             plat: android
             arch: x86_64
+            loaderarch: x64
 
           - os: ubuntu-latest
             name: Android (riscv64)
             plat: android
             arch: riscv64
+            loaderarch: riscv64
 
           - os: ubuntu-latest
             name: Linux (x64)
             plat: linux
             arch: x64
+            loaderarch: x64
 
           - os: ubuntu-latest
             name: Linux (arm64)
@@ -80,6 +92,7 @@ jobs:
             arch: arm64
             triplet: aarch64-linux-gnu
             libc_arch: arm64
+            loaderarch: arm64
 
           - os: ubuntu-latest
             name: Linux (arm32)
@@ -87,6 +100,7 @@ jobs:
             arch: arm32
             triplet: arm-linux-gnueabihf
             libc_arch: armhf
+            loaderarch: arm32
 
           - os: ubuntu-latest
             name: Linux (ppc64)
@@ -94,6 +108,7 @@ jobs:
             arch: ppc64le
             triplet: powerpc64le-linux-gnu
             libc_arch: ppc64el
+            loaderarch: ppc64le
 
           - os: ubuntu-latest
             name: Linux (riscv)
@@ -101,37 +116,44 @@ jobs:
             arch: riscv64
             triplet: riscv64-linux-gnu
             libc_arch: riscv64
+            loaderarch: riscv64
 
           - os: ubuntu-latest
             name: Linux (loongarch64)
             plat: linux
             arch: loong64
             libc_arch: loongarch64
+            loaderarch: loong64
 
           - os: ubuntu-latest
             name: FreeBSD (x64)
             plat: freebsd
             arch: x64
+            loaderarch: x64
 
           - os: ubuntu-latest
             name: FreeBSD (arm64)
             plat: freebsd
             arch: arm64
+            loaderarch: arm64
 
           - os: macos-latest
             name: MacOS (arm64)
             plat: macos
             arch: arm64
+            loaderarch: arm64
 
           - os: macos-13
             name: MacOS (x86)
             plat: macos
             arch: x64
+            loaderarch: x64
 
           - os: macos-latest
             name: IphoneOS
             plat: iphoneos
             arch: arm64
+            loaderarch: arm64
 
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -245,8 +267,7 @@ jobs:
             xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-            mv build/bsd build/freebsd
-            mv build/freebsd/x86_64 build/freebsd/x64
+            xmake install -o prod
 
       - name: Build FreeBSD (arm64)
         if: matrix.plat == 'freebsd' && matrix.arch == 'arm64'
@@ -274,25 +295,21 @@ jobs:
             xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-            mv build/bsd build/freebsd
+            xmake install -o prod
 
-      - name: Fix MacOS Target Path (Stage 1)
-        if: ${{ matrix.plat == 'macos' }}
-        run: mv build/macosx build/macos
+      - name: Xmake install
+        if: ${{ matrix.plat != 'freebsd' }}
+        run: xmake install -o prod
 
-      - name: Fix MacOS Target Path (Stage 2)
-        if: ${{ matrix.plat == 'macos' && matrix.arch == 'x64' }}
-        run: mv build/macos/x86_64 build/macos/x64
-
-      - name: Fix Path
+      - name: Construct output
         run: |
-          cd build/${{ matrix.plat }}/${{ matrix.arch }}
-          mv ${{ env.MODE }}/* .
-          cd ../../..
+          mkdir target/${{ matrix.plat }}/${{ matrix.loaderarch }}
+          cp prod/bin/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
+          cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build
-          path: build/
+          name: target
+          path: target/
  
