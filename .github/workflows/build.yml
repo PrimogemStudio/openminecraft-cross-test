@@ -289,6 +289,29 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: target
+          name: target-${{ matrix.plat }}-${{ matrix.loaderarch }}
           path: target/
  
+  merge:
+    name: Merge binaries
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - uses: actions/download-artifact@v4
+          name: Download Artifacts
+          with:
+            pattern: *
+            merge-multiple: true
+            path: libs/
+
+        - name: Upload Artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: target-all
+            path: libs/
