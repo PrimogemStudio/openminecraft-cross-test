@@ -159,7 +159,7 @@ jobs:
 
           - os: macos-latest
             name: WatchOS
-            plat: WatchOS
+            plat: watchos
             arch: arm64
             loaderarch: arm64
 
