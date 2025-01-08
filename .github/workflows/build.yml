@@ -7,6 +7,7 @@ env:
   XMAKE_ARGS: -v
   ANDROID_NDK_VERSION: r27c
   OHOS_SDK_VERSION: 5.0.0-Release
+  UBUNTU_VERSION: 24.04
 
 jobs:
   build:
@@ -32,7 +33,7 @@ jobs:
             arch: arm64
             loaderarch: arm64
 
-          - os: ubuntu-latest
+          - os: ubuntu-${{ env.UBUNTU_VERSION }}
             name: OpenHarmony (arm64)
             plat: harmony
             arch: arm64-v8a
@@ -308,11 +309,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ success() }}
     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
         - name: Download Artifacts
           uses: actions/download-artifact@v4
           with:
