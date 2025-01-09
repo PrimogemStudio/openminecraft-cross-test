@@ -32,6 +32,12 @@ jobs:
             arch: arm64
             loaderarch: arm64
 
+          - os: windows-latest
+            name: Windows (riscv)
+            plat: windows
+            arch: riscv
+            loaderarch: riscv
+
           - os: ubuntu-latest
             name: OpenHarmony (arm64)
             plat: harmony
