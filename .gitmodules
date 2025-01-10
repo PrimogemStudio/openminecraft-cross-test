@@ -4,3 +4,9 @@
 [submodule "extlibs/freetype"]
 	path = extlibs/freetype
 	url = https://github.com/freetype/FreeType
+[submodule "extlibs/xxHash"]
+	path = extlibs/xxHash
+	url = https://github.com/Cyan4973/xxHash
+[submodule "extlibs/openal-soft"]
+	path = extlibs/openal-soft
+	url = https://github.com/kcat/openal-soft
