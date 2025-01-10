@@ -65,3 +65,9 @@ package("openal-soft-mod")
 package_end()
 
 add_requires("openal-soft-mod", { system = false, configs = { shared = true } })
+
+target("openal-wrap")
+set_kind("shared")
+add_files("../src/temp.cpp")
+add_packages("openal-soft-mod")
+add_links("openal")
