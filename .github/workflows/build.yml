@@ -278,14 +278,12 @@ jobs:
       - name: Construct output
         run: |
           mkdir -p target/${{ matrix.plat }}/${{ matrix.loaderarch }}
-          ls prod
           cp prod/bin/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: Construct output (UNIX)
         if: matrix.plat != 'windows'
         run: |
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
-          ldd prod/lib/*
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
