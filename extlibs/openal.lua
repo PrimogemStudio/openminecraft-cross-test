@@ -30,7 +30,7 @@ package("openal-soft-mod")
         add_syslinks("dl", "pthread")
      elseif is_plat("bsd", "cross") then
         add_syslinks("pthread")
-    elseif is_plat("android") then
+    elseif is_plat("android", "harmony") then
         add_syslinks("dl", "OpenSLES")
     elseif is_plat("macosx", "iphoneos") then
         add_frameworks("CoreAudio", "CoreFoundation", "AudioToolbox")
@@ -42,7 +42,7 @@ package("openal-soft-mod")
         end
     end)
 
-    on_install("windows", "linux", "mingw", "macosx", "android", "iphoneos", "cross", "bsd" , function (package)
+    on_install("windows", "linux", "mingw", "macosx", "android", "iphoneos", "cross", "bsd", "harmony" , function (package)
         if (package:is_plat("linux") and linuxos.name() == "fedora") or package:is_plat("bsd") then
             -- https://github.com/kcat/openal-soft/issues/864
             io.replace("CMakeLists.txt", "if(HAVE_GCC_PROTECTED_VISIBILITY)", "if(0)", {plain = true})
@@ -64,4 +64,4 @@ package("openal-soft-mod")
     end)
 package_end()
 
-add_requires("openal-soft-mod", { configs = { shared = true } })
+add_requires("openal-soft-mod", { system = false, configs = { shared = true } })
