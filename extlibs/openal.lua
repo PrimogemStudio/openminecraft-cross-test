@@ -64,4 +64,4 @@ package("openal-soft-mod")
     end)
 package_end()
 
-add_requires("openal-soft-mod", { system = is_plat("windows"), configs = { shared = true } })
+add_requires("openal-soft-mod", { system = false, configs = { shared = true } })
