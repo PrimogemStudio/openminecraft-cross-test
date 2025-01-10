@@ -70,8 +70,4 @@ target("openal-wrap")
 set_kind("shared")
 add_files("../src/temp.cpp")
 add_packages("openal-soft-mod")
-if is_plat("windows") then
-    add_links("openal32")
-else
-    add_links("openal")
-end
+add_links("openal")
