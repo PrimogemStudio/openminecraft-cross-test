@@ -269,11 +269,11 @@ jobs:
             xmake f -m ${{ env.MODE }} -yc ${{ env.XMAKE_ARGS }}
             xmake -y --jobs=${{ env.JOBS }} --linkjobs=${{ env.LINK_JOBS }} ${{ env.XMAKE_ARGS }}
 
-            xmake install -o prod
+            xmake install -o prod ${{ env.XMAKE_ARGS }}
 
       - name: Xmake install
         if: matrix.plat != 'freebsd'
-        run: xmake install -o prod
+        run: xmake install -o prod ${{ env.XMAKE_ARGS }}
 
       - name: Construct output
         run: |
