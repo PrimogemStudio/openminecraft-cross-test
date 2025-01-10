@@ -169,8 +169,6 @@ jobs:
       - name: Install xmake
         if: matrix.plat != 'freebsd'
         uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: branch@master
 
       - name: Update xmake repo
         if: matrix.plat != 'freebsd'
