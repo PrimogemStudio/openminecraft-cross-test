@@ -10,7 +10,9 @@ add_rules("mode.release")
 
 function libmmd_source()
     add_packages("bullet3", "glm")
-    add_files("src/**.cpp")
+    add_files("src/base/**.cpp")
+    add_files("src/pmx/**.cpp")
+    add_files("src/test/**.cpp")
     add_includedirs("include")
 end
 
