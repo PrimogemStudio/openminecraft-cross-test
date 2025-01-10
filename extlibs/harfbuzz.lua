@@ -72,7 +72,6 @@ function libharfbuzz_source()
         "hb-subset-instancer-iup.cc", 
         "hb-subset-instancer-solver.cc", 
         "hb-subset-plan.cc", 
-        "hb-subset-repacker.cc", 
         "hb-subset.cc"
     }
 

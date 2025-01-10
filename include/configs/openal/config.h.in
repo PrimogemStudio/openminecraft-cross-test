@@ -1,4 +1,0 @@
-${define FORCE_ALIGN}
-${define ALSOFT_EMBED_HRTF_DATA}
-${define HAVE_PROC_PIDPATH}
-${define HAVE_DLFCN_H}
