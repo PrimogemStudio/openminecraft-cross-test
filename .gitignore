@@ -7,3 +7,4 @@ cmake*
 .cache
 .idea
 .clang-format
+prod
