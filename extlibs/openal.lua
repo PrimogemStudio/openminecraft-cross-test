@@ -47,7 +47,7 @@ package("openal-soft-mod")
             -- https://github.com/kcat/openal-soft/issues/864
             io.replace("CMakeLists.txt", "if(HAVE_GCC_PROTECTED_VISIBILITY)", "if(0)", {plain = true})
         end
-        local configs = {"-DALSOFT_EXAMPLES=OFF", "-DALSOFT_UTILS=OFF"}
+        local configs = {"-DALSOFT_EXAMPLES=OFF", "-DALSOFT_UTILS=OFF", "-DALSOFT_BACKEND_SNDIO=OFF"}
         if package:config("shared") then
             table.insert(configs, "-DBUILD_SHARED_LIBS=ON")
             table.insert(configs, "-DLIBTYPE=SHARED")
