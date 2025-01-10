@@ -1,5 +1,7 @@
 #include <AL/al.h>
+#include "stdio.h"
 
-const ALchar* alwrap_test() {
-    return alGetString(AL_VERSION);
+int main() {
+    printf(alGetString(AL_VERSION));
+    return 0;
 }

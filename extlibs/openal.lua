@@ -67,11 +67,6 @@ package_end()
 add_requires("openal-soft-mod", { system = false, configs = { shared = true } })
 
 target("openal-wrap")
-set_kind("shared")
+set_kind("binary")
 add_files("../src/external/openal/helper.cpp")
 add_packages("openal-soft-mod")
-if is_plat("windows") then
-    -- add_links("openal32")
-else
-    -- add_links("openal")
-end
