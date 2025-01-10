@@ -71,7 +71,7 @@ set_kind("shared")
 add_files("../src/external/openal/helper.cpp")
 add_packages("openal-soft-mod")
 if is_plat("windows") then
-    add_links("openal32")
+    -- add_links("openal32")
 else
-    add_links("openal")
+    -- add_links("openal")
 end
