@@ -9,7 +9,7 @@ add_rules("mode.debug")
 add_rules("mode.release")
 
 function libmmd_source()
-    add_packages("bullet3", "glm", "openal-soft")
+    add_packages("bullet3", "glm", "openal-soft-mod")
     add_files("src/**.cpp")
     add_includedirs("include")
 end
