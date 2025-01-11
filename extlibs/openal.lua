@@ -1,26 +1,5 @@
 package("openal-soft-mod")
-
-    set_homepage("https://openal-soft.org")
-    set_description("OpenAL Soft is a software implementation of the OpenAL 3D audio API.")
-    set_license("LGPL-2.0")
-
-    add_urls("https://github.com/kcat/openal-soft/archive/refs/tags/$(version).tar.gz", {version = function (version)
-        return version:ge("1.21.0") and version or "openal-soft-" .. version
-    end})
-    add_urls("https://github.com/kcat/openal-soft.git")
-
-    add_versions("1.23.1", "dfddf3a1f61059853c625b7bb03de8433b455f2f79f89548cbcbd5edca3d4a4a")
-    add_versions("1.22.2", "3e58f3d4458f5ee850039b1a6b4dac2343b3a5985a6a2e7ae2d143369c5b8135")
-    add_versions("1.22.0", "814831a8013d7365dfd1917b27f1fb6e723f3be3fe1c6a7ff4516425d8392f68")
-    add_versions("1.21.1", "8ac17e4e3b32c1af3d5508acfffb838640669b4274606b7892aa796ca9d7467f")
-
-    if is_plat("mingw") and is_subhost("msys") then
-        add_extsources("pacman::openal")
-    elseif is_plat("linux") then
-        add_extsources("pacman::openal", "apt::libopenal-dev")
-    elseif is_plat("macosx") then
-        add_extsources("brew::openal-soft")
-    end
+    set_sourcedir(path.join(os.scriptdir(), "openal-soft"))
 
     add_deps("cmake")
 

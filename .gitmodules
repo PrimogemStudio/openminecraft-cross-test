@@ -10,3 +10,6 @@
 [submodule "extlibs/openal-soft"]
 	path = extlibs/openal-soft
 	url = https://github.com/kcat/openal-soft
+[submodule "extlibs/glfw"]
+	path = extlibs/glfw
+	url = https://github.com/glfw/glfw
