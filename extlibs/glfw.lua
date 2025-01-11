@@ -49,7 +49,7 @@ package("glfw-mod")
     end)
 package_end()
 
-add_requires("glfw-mod", { system = false, configs = { shared = true } })
+add_requires("glfw-mod", { configs = { shared = true } })
 
 target("glfw-wrap")
 set_kind("binary")
