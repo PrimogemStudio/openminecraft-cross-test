@@ -13,6 +13,8 @@ package("glfw-mod")
         add_syslinks("user32", "shell32", "gdi32")
     elseif is_plat("mingw") then
         add_syslinks("gdi32")
+    elseif is_plat("android", "harmony") then
+        add_syslinks("dl", "OpenSLES")
     elseif is_plat("linux") then
         add_syslinks("dl", "pthread")
     end
@@ -47,7 +49,7 @@ package("glfw-mod")
     end)
 package_end()
 
-add_requires("glfw-mod", { system = false, configs = { shared = true, x11 = is_plat("linux"), wayland = is_plat("linux") } })
+add_requires("glfw-mod", { system = false, configs = { shared = true } })
 
 target("glfw-wrap")
 set_kind("binary")
