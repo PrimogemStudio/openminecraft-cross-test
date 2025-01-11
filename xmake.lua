@@ -4,7 +4,9 @@ includes("extlibs/freetype.lua")
 includes("extlibs/xxhash.lua")
 includes("extlibs/openal.lua")
 if not is_plat("ios", "harmony") then
-    includes("extlibs/glfw.lua")
+    if not is_plat("linux") or is_arch("x86_64", "x64") then 
+        includes("extlibs/glfw.lua")
+    end 
 end
 
 add_requires("bullet3", "glm")

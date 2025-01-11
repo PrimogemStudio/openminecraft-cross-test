@@ -19,19 +19,18 @@ package("glfw-mod")
         add_syslinks("dl", "pthread")
     end
 
-    --on_load(function (package)
-    --    local glfw_include = package:config("glfw_include")
-    --    if glfw_include ~= "system" then
-    --        package:add("defines", "GLFW_INCLUDE_" .. glfw_include:upper())
-    --    end
-    --    if package:config("x11") then
-    --        package:add("deps", "libx11")
-    --        -- "libxrandr", "libxrender", "libxinerama", "libxfixes", "libxcursor", "libxi", "libxext"
-    --    end
-    --    if package:config("wayland") then
-    --        package:add("deps", "wayland")
-    --    end
-    --end)
+    on_load(function (package)
+        local glfw_include = package:config("glfw_include")
+        if glfw_include ~= "system" then
+            package:add("defines", "GLFW_INCLUDE_" .. glfw_include:upper())
+        end
+        if package:config("x11") then
+            package:add("deps", "libx11", "libxrandr", "libxrender", "libxinerama", "libxfixes", "libxcursor", "libxi", "libxext")
+        end
+        if package:config("wayland") then
+            package:add("deps", "wayland")
+        end
+    end)
 
     on_install("!wasm and !ios", function (package)
         local configs = {"-DGLFW_BUILD_DOCS=OFF", "-DGLFW_BUILD_TESTS=OFF", "-DGLFW_BUILD_EXAMPLES=OFF"}
