@@ -13,3 +13,9 @@
 [submodule "extlibs/glfw"]
 	path = extlibs/glfw
 	url = https://github.com/glfw/glfw
+[submodule "extlibs/shaderc"]
+	path = extlibs/shaderc
+	url = https://github.com/google/shaderc
+[submodule "extlibs/glslang"]
+	path = extlibs/glslang
+	url = https://github.com/KhronosGroup/glslang
