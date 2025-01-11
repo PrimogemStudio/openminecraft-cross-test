@@ -1,7 +1,0 @@
-target("msdfgen")
-set_kind("shared")
-add_files("msdfgen/core/**.cpp")
-add_files("msdfgen/ext/**.cpp")
-add_includedirs("msdfgen")
-add_includedirs("msdfgen/core")
-add_includedirs("msdfgen/ext")
