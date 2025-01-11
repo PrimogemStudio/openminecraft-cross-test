@@ -1,0 +1,7 @@
+target("yoga")
+set_languages("c++20")
+set_kind("shared")
+add_files("yoga/yoga/**.cpp")
+add_files("yoga/capture/**.cpp")
+add_includedirs("yoga")
+add_includedirs("yoga/lib")

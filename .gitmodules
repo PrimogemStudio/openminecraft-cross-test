@@ -22,3 +22,6 @@
 [submodule "extlibs/meshoptimizer"]
 	path = extlibs/meshoptimizer
 	url = https://github.com/zeux/meshoptimizer
+[submodule "extlibs/yoga"]
+	path = extlibs/yoga
+	url = https://github.com/facebook/yoga
