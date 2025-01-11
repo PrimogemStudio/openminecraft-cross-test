@@ -7,14 +7,14 @@ package("glfw-mod")
 
     add_deps("cmake")
     add_deps("opengl", {optional = true})
-    if is_plat("macosx", "ios") then
+    if is_plat("macosx") then
         add_frameworks("Cocoa", "IOKit")
     elseif is_plat("windows") then
         add_syslinks("user32", "shell32", "gdi32")
     elseif is_plat("mingw") then
         add_syslinks("gdi32")
-    elseif is_plat("android", "harmony") then
-        add_syslinks("dl", "OpenSLES")
+    elseif is_plat("android") then
+        add_syslinks("dl")
     elseif is_plat("linux") then
         add_syslinks("dl", "pthread")
     end
@@ -25,14 +25,15 @@ package("glfw-mod")
             package:add("defines", "GLFW_INCLUDE_" .. glfw_include:upper())
         end
         if package:config("x11") then
-            package:add("deps", "libx11", "libxrandr", "libxrender", "libxinerama", "libxfixes", "libxcursor", "libxi", "libxext")
+            package:add("deps", "libx11")
+            -- "libxrandr", "libxrender", "libxinerama", "libxfixes", "libxcursor", "libxi", "libxext"
         end
         if package:config("wayland") then
             package:add("deps", "wayland")
         end
     end)
 
-    on_install("!wasm", function (package)
+    on_install("!wasm and !ios", function (package)
         local configs = {"-DGLFW_BUILD_DOCS=OFF", "-DGLFW_BUILD_TESTS=OFF", "-DGLFW_BUILD_EXAMPLES=OFF"}
         table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:is_debug() and "Debug" or "Release"))
         table.insert(configs, "-DBUILD_SHARED_LIBS=" .. (package:config("shared") and "ON" or "OFF"))

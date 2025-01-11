@@ -3,7 +3,9 @@ set_languages("c++17")
 includes("extlibs/freetype.lua")
 includes("extlibs/xxhash.lua")
 includes("extlibs/openal.lua")
-includes("extlibs/glfw.lua")
+if not is_plat("ios", "harmony") then
+    includes("extlibs/glfw.lua")
+end
 
 add_requires("bullet3", "glm")
 add_rules("mode.debug")
