@@ -5,7 +5,8 @@ package("spirv-tools-local")
         local configs = { 
             "-DSPIRV-Headers_SOURCE_DIR=" .. string.gsub(path.join(os.scriptdir(), "spirv-headers"), "\\", "/"), 
             "-DSPIRV_SKIP_TESTS=ON", 
-            "-DSPIRV_WERROR=OFF"
+            "-DSPIRV_WERROR=OFF", 
+            "-DBUILD_SHARED_LIBS=OFF"
         }
         import("package.tools.cmake").install(package, configs)
         package:add("links", "SPIRV-Tools", "SPIRV-Tools-link", "SPIRV-Tools-reduce", "SPIRV-Tools-opt", "SPIRV-Tools-diff", "SPIRV-Tools-lint")
@@ -50,3 +51,7 @@ add_defines("ENABLE_HLSL=1")
 if is_plat("windows") then
     add_defines("WIN32")
 end
+add_files("spirv-tools/source/util/timer.cpp")
+add_files("spirv-tools/source/util/bit_vector.cpp")
+add_includedirs("spirv-tools")
+add_defines("SPIRV_TIMER_ENABLED=1")
