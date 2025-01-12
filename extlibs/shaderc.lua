@@ -54,4 +54,6 @@ end
 add_files("spirv-tools/source/util/timer.cpp")
 add_files("spirv-tools/source/util/bit_vector.cpp")
 add_includedirs("spirv-tools")
-add_defines("SPIRV_TIMER_ENABLED=1")
+if not is_plat("windows") then
+    add_defines("SPIRV_TIMER_ENABLED=1")
+end
