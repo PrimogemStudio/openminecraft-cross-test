@@ -9,9 +9,16 @@ package("glslang-local")
     end)
 package_end()
 
-add_requires("glslang-local")
+local libname
+if is_plat("linux") and is_arch("riscv64") then
+    libname = "glslang"
+else
+    libname = "glslang-local"
+end
+
+add_requires(libname)
 
 target("shaderc")
 set_kind("shared")
-add_packages("glslang-local")
+add_packages(libname)
 add_files("../src/external/placeholder.cpp")
