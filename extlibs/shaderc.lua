@@ -4,7 +4,8 @@ package("spirv-tools-local")
     on_install(function (package)
         local configs = { 
             "-DSPIRV-Headers_SOURCE_DIR=" .. string.gsub(path.join(os.scriptdir(), "spirv-headers"), "\\", "/"), 
-            "-DSPIRV_SKIP_TESTS=ON"
+            "-DSPIRV_SKIP_TESTS=ON", 
+            "-DSPIRV_WERROR=OFF"
         }
         import("package.tools.cmake").install(package, configs)
     end)
