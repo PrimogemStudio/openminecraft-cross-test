@@ -5,8 +5,11 @@ package("spirv-tools-local")
         local configs = { 
             "-DSPIRV-Headers_SOURCE_DIR=" .. string.gsub(path.join(os.scriptdir(), "spirv-headers"), "\\", "/"), 
             "-DSPIRV_SKIP_TESTS=ON", 
-            "-DSPIRV_WERROR=OFF"
+            "-DSPIRV_WERROR=OFF", 
+            "-DBUILD_SHARED_LIBS=OFF"
         }
+        local pth = path.join(os.scriptdir(), "spirv-tools/CMakeLists.txt")
+        io.replace(pth, "set(SPIRV_SHARED_LIBRARIES \"-lSPIRV-Tools-shared\")", "", { plain = true })
         import("package.tools.cmake").install(package, configs)
     end)
 package_end()
@@ -32,7 +35,7 @@ package("googletest-local")
     end)
 package_end()
 
-add_requires("glslang-local", "spirv-tools-local", "googletest-local")
+add_requires("glslang-local", "spirv-tools-local", "googletest-local", { configs = { shared = false } })
 
 target("shaderc")
 set_kind("shared")
