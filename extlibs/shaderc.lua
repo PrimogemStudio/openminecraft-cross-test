@@ -46,3 +46,6 @@ add_includedirs("shaderc/libshaderc/src")
 add_files("shaderc/libshaderc_util/src/*.cc")
 add_includedirs("shaderc/libshaderc_util/include")
 add_defines("ENABLE_HLSL=1")
+if is_plat("windows") then
+    add_defines("WIN32")
+end
