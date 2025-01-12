@@ -16,7 +16,7 @@ package("glslang-local")
     add_deps("spirv-tools-local")
     on_install(function (package)
         local configs = { "-DENABLE_OPT=1", "-DALLOW_EXTERNAL_SPIRV_TOOLS=ON" }
-        local pth = path.join(os.scriptdir(), "glslang/glslang/CMakeLists.txt")
+        local pth = path.join(os.scriptdir(), "glslang/glslang/CMakeLists.txt").replace("\\", "/")
         io.replace(pth, "message(\"unknown platform\")", "add_subdirectory(OSDependent/Unix)", { plain = true })
         import("package.tools.cmake").install(package, configs)
     end)
