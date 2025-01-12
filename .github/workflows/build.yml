@@ -110,14 +110,6 @@ jobs:
             libc_arch: ppc64el
             loaderarch: ppc64le
 
-#          - os: ubuntu-22.04
-#            name: Linux (riscv)
-#            plat: linux
-#            arch: riscv64
-#            triplet: riscv64-linux-gnu
-#            libc_arch: riscv64
-#            loaderarch: riscv64
-
           - os: ubuntu-22.04
             name: Linux (loongarch64)
             plat: linux
@@ -131,13 +123,6 @@ jobs:
             arch: x64
             containerarch: x86-64
             loaderarch: x64
-
-          - os: ubuntu-22.04
-            name: FreeBSD (arm64)
-            plat: freebsd
-            arch: arm64
-            containerarch: arm64
-            loaderarch: arm64
 
           - os: macos-latest
             name: MacOS (arm64)
