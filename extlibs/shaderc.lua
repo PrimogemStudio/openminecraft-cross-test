@@ -3,7 +3,7 @@ package("spirv-tools-local")
     set_sourcedir(path.join(os.scriptdir(), "spirv-tools"))
     on_install(function (package)
         local configs = { 
-            "-DSPIRV-Headers_SOURCE_DIR=" .. path.join(os.scriptdir(), "spirv-headers"), 
+            "-DSPIRV-Headers_SOURCE_DIR=" .. string.gsub(path.join(os.scriptdir(), "spirv-headers"), "\\", "/"), 
             "-DSPIRV_SKIP_TESTS=ON"
         }
         import("package.tools.cmake").install(package, configs)
@@ -16,7 +16,7 @@ package("glslang-local")
     add_deps("spirv-tools-local")
     on_install(function (package)
         local configs = { "-DENABLE_OPT=1", "-DALLOW_EXTERNAL_SPIRV_TOOLS=ON" }
-        local pth = path.join(os.scriptdir(), "glslang/glslang/CMakeLists.txt").replace("\\", "/")
+        local pth = path.join(os.scriptdir(), "glslang/glslang/CMakeLists.txt")
         io.replace(pth, "message(\"unknown platform\")", "add_subdirectory(OSDependent/Unix)", { plain = true })
         import("package.tools.cmake").install(package, configs)
     end)
