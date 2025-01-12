@@ -5,12 +5,10 @@ package("spirv-tools-local")
         local configs = { 
             "-DSPIRV-Headers_SOURCE_DIR=" .. string.gsub(path.join(os.scriptdir(), "spirv-headers"), "\\", "/"), 
             "-DSPIRV_SKIP_TESTS=ON", 
-            "-DSPIRV_WERROR=OFF", 
-            "-DBUILD_SHARED_LIBS=OFF"
+            "-DSPIRV_WERROR=OFF"
         }
-        local pth = path.join(os.scriptdir(), "spirv-tools/CMakeLists.txt")
-        io.replace(pth, "set(SPIRV_SHARED_LIBRARIES \"-lSPIRV-Tools-shared\")", "", { plain = true })
         import("package.tools.cmake").install(package, configs)
+        package:add("links", "SPIRV-Tools", "SPIRV-Tools-link", "SPIRV-Tools-reduce", "SPIRV-Tools-opt", "SPIRV-Tools-diff", "SPIRV-Tools-lint")
     end)
 package_end()
 
