@@ -15,7 +15,7 @@
 	url = https://github.com/glfw/glfw
 [submodule "extlibs/shaderc"]
 	path = extlibs/shaderc
-	url = https://github.com/KhronosGroup/shaderc
+	url = https://github.com/google/shaderc
 [submodule "extlibs/glslang"]
 	path = extlibs/glslang
 	url = https://github.com/KhronosGroup/glslang
@@ -31,3 +31,6 @@
 [submodule "extlibs/spirv-tools"]
 	path = extlibs/spirv-tools
 	url = https://github.com/KhronosGroup/SPIRV-Tools
+[submodule "extlibs/googletest"]
+	path = extlibs/googletest
+	url = https://github.com/google/googletest
