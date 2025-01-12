@@ -15,3 +15,6 @@ target("shaderc")
 set_kind("shared")
 add_packages("glslang-local")
 add_files("../src/external/placeholder.cpp")
+if is_plat("linux") then
+    add_links("atomic")
+end
