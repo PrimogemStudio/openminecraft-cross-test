@@ -163,7 +163,7 @@ jobs:
         if: matrix.plat == 'freebsd'
         uses: jlumbroso/free-disk-space@main
         with:
-          tool-cache: false
+          tool-cache: true
           android: true
           dotnet: true
           haskell: true
