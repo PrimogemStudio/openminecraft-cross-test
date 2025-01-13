@@ -284,7 +284,8 @@ jobs:
         if: matrix.plat == 'macos' || matrix.plat == 'ios'
         run: |
           cd extlibs/MoltenVK
-          make all
+          ./fetchDependencies --${{ matrix.plat }}
+          make ${{ matrix.plat }}
           ls
           cd ../..
 
