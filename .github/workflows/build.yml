@@ -284,7 +284,7 @@ jobs:
         if: matrix.plat == 'macos' || matrix.plat == 'ios'
         run: |
           cd extlibs/MoltenVK
-          git apply ../../moltenvk_dylib.gitpatch
+          git apply ../../patches/moltenvk_dylib.gitpatch
           ./fetchDependencies --${{ matrix.plat }}
           make ${{ matrix.plat }}
           find . -name "*.dylib"
