@@ -1,0 +1,13 @@
+diff --git a/Scripts/package_dylibs.sh b/Scripts/package_dylibs.sh
+index 5b288075..aad3d27e 100755
+--- a/Scripts/package_dylibs.sh
++++ b/Scripts/package_dylibs.sh
+@@ -39,7 +39,7 @@ mkdir -p "${mvk_pkg_prod_path}"
+ 
+ # App store distribution does not support naked dylibs, so only include a naked dylib for macOS.
+ copy_dylib "" "macOS"
+-#copy_dylib "-iphoneos" "iOS"
++copy_dylib "-iphoneos" "iOS"
+ #copy_dylib "-iphonesimulator" "iOS-simulator"
+ #copy_dylib "-appletvos" "tvOS"
+ #copy_dylib "-appletvsimulator" "tvOS-simulator"
