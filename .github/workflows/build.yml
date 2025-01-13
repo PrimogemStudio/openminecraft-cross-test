@@ -286,7 +286,8 @@ jobs:
           cd extlibs/MoltenVK
           ./fetchDependencies --${{ matrix.plat }}
           make ${{ matrix.plat }}
-          ls ./Package/Latest/MoltenVK/dynamic/dylib
+          find . -name "*.dylib"
+          find . -name "*.a"
           cd ../..
 
       - name: Upload Artifacts
