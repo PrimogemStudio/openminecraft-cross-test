@@ -5,6 +5,7 @@ includes("extlibs/xxhash.lua")
 includes("extlibs/openal.lua")
 includes("extlibs/meshoptimizer.lua")
 includes("extlibs/yoga.lua")
+includes("extlibs/stb.lua")
 if not is_plat("bsd") then
     includes("extlibs/shaderc.lua")
 end

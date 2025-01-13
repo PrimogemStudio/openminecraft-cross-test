@@ -37,3 +37,6 @@
 [submodule "extlibs/MoltenVK"]
 	path = extlibs/MoltenVK
 	url = https://github.com/KhronosGroup/MoltenVK
+[submodule "extlibs/stb"]
+	path = extlibs/stb
+	url = https://github.com/nothings/stb
