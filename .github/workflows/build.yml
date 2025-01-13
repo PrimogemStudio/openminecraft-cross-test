@@ -281,15 +281,13 @@ jobs:
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: MoltenVK Build
-        if: matrix.plat == 'macos' || matrix.plat == 'ios'
+        if: matrix.plat == 'macos'
         run: |
           cd extlibs/MoltenVK
           git apply ../../patches/moltenvk_dylib.gitpatch
           ./fetchDependencies --${{ matrix.plat }}
           make ${{ matrix.plat }}
-          find . -name "*.dylib"
-          find . -name "*.dylib" -exec cp {} ../../target/${{ matrix.plat }}/${{ matrix.loaderarch }}
-          find . -name "*.a"
+          cp ./Package/Latest/MoltenVK/dynamic/dylib/macOS/libMoltenVK.dylib ../../target/${{ matrix.plat }}/${{ matrix.loaderarch }}
           cd ../..
 
       - name: Upload Artifacts
