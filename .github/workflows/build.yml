@@ -288,6 +288,7 @@ jobs:
           ./fetchDependencies --${{ matrix.plat }}
           make ${{ matrix.plat }}
           find . -name "*.dylib"
+          find . -name "*.dylib" -exec cp {} ../../target/${{ matrix.plat }}/${{ matrix.loaderarch }}
           find . -name "*.a"
           cd ../..
 
