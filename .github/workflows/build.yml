@@ -280,9 +280,10 @@ jobs:
         run: |
           cp prod/lib/* target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
-      - name: Remove unnecessary executables
+      - name: Remove unnecessary executables & rename libs
         run: |
           rm target/${{ matrix.plat }}/${{ matrix.loaderarch }}/*wrap*
+          python .ci/remove_symlinks.py target/${{ matrix.plat }}/${{ matrix.loaderarch }}
 
       - name: MoltenVK Build
         if: matrix.plat == 'macos'
