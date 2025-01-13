@@ -34,3 +34,6 @@
 [submodule "extlibs/googletest"]
 	path = extlibs/googletest
 	url = https://github.com/google/googletest
+[submodule "extlibs/MoltenVK"]
+	path = extlibs/MoltenVK
+	url = https://github.com/KhronosGroup/MoltenVK
