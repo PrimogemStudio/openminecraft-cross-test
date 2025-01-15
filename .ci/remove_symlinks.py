@@ -11,6 +11,8 @@ for file in os.listdir(pth):
         continue
     elif os.path.islink(fp):
         os.remove(fp)
+    elif file == "OpenAL32.dll":
+        os.rename(fp, fp.replace("OpenAL32.dll", "openal.dll"))
     else:
         filenameparts = file.split(".")
         resultparts = []
